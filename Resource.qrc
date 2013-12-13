@@ -1,0 +1,19 @@
+<RCC>
+    <qresource prefix="/Qss">
+        <file>Resource/Qss/MainWindow.css</file>
+        <file>Resource/Qss/PlayScene.css</file>
+    </qresource>
+    <qresource prefix="/Img">
+        <file>Resource/Img/background.png</file>
+        <file>Resource/Img/close_pressed.png</file>
+        <file>Resource/Img/close.png</file>
+        <file>Resource/Img/close_hover.png</file>
+        <file>Resource/Img/like.png</file>
+        <file>Resource/Img/unlike.png</file>
+        <file>Resource/Img/trash_can_clicked.png</file>
+        <file>Resource/Img/trash_can_normal.png</file>
+        <file>Resource/Img/next_clicked.png</file>
+        <file>Resource/Img/next_normal.png</file>
+        <file>Resource/Img/like_clicked.png</file>
+    </qresource>
+</RCC>

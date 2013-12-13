@@ -1,0 +1,55 @@
+/*
+*喜欢按钮样式
+*/
+QToolButton#tbtn_like_normal
+{
+        border-image:url(:/Img/Resource/Img/unlike.png) 0 0 0 0 stretch stretch;
+}
+
+QToolButton#tbtn_like_normal:hover
+{
+        border-image:url(:/Img/Resource/Img/like_clicked.png) 0 0 0 0 stretch stretch;
+}
+
+QToolButton#tbtn_like_liked
+{
+        border-image:url(:/Img/Resource/Img/like.png) 0 0 0 0 stretch stretch;
+}
+/*
+*不喜欢按钮样式
+*pressed缺少一个更淡的素材
+*/
+QToolButton#tbtn_trash
+{
+        border-image:url(:/Img/Resource/Img/trash_can_normal.png) 0 0 0 0 stretch stretch;
+}
+
+QToolButton#tbtn_trash:hover
+{
+        border-image:url(:/Img/Resource/Img/trash_can_clicked.png) 0 0 0 0 stretch stretch;
+}
+
+QToolButton#tbtn_trash:pressed
+{
+        border-image:url(:/Img/Resource/Img/trash_can_normal.png) 0 0 0 0 stretch stretch;
+}
+
+/*
+*下一曲按钮样式
+*pressed缺少一个更淡的素材
+*/
+
+QToolButton#tbtn_next
+{
+        border-image:url(:/Img/Resource/Img/next_normal.png) 0 0 0 0 stretch stretch;
+}
+
+QToolButton#tbtn_next:hover
+{
+        border-image:url(:/Img/Resource/Img/next_clicked.png) 0 0 0 0 stretch stretch;
+}
+
+QToolButton#tbtn_next:pressed
+{
+        border-image:url(:/Img/Resource/Img/next_normal.png) 0 0 0 0 stretch stretch;
+}

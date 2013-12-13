@@ -1,0 +1,24 @@
+/*
+*
+*/
+MainWindow#main_window
+{
+    border-image:url(:/Img/Resource/Img/background.png) 0 0 0 0 stretch stretch;
+}
+
+QToolButton#main_close_btn
+{
+    width: 20px;
+    height: 20px;
+    border-image:url(:/Img/Resource/Img/close.png) 0 0 0 0 stretch stretch;
+}
+
+QToolButton#main_close_btn:hover
+{
+    border-image:url(:/Img/Resource/Img/close_hover.png) 0 0 0 0 stretch stretch;
+}
+
+QToolButton#main_close_btn:pressed
+{
+    border-image:url(:/Img/Resource/Img/close_pressed.png) 0 0 0 0 stretch stretch;
+}
