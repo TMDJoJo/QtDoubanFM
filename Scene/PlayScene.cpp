@@ -3,6 +3,7 @@
 #include <QFile>
 #include <QPainter>
 #include <QDebug>
+#include "./Net/Web.h"
 
 PlayScene::PlayScene(QWidget *parent) :
     QWidget(parent),
@@ -62,6 +63,7 @@ void PlayScene::OnLikeButtonClicked()
 
 void PlayScene::OnNextButtonClicked()
 {
+    Web* web = new Web();
 
 }
 
