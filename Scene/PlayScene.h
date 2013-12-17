@@ -3,11 +3,14 @@
 
 #include <QWidget>
 
+#include "../Fm/IActor.h"
+#include <QNetworkReply>
+
 namespace Ui {
 class PlayScene;
 }
 
-class PlayScene : public QWidget
+class PlayScene : public QWidget ,public IActor
 {
     Q_OBJECT
     
@@ -15,12 +18,15 @@ public:
     explicit PlayScene(QWidget *parent = 0);
     ~PlayScene();
 
+    virtual bool Excute();
+
 protected:
     void paintEvent(QPaintEvent* event);
 private slots:
     void OnLikeButtonClicked();
     void OnNextButtonClicked();
-
+    void OnTrashButtonClicked();
+    void method(QNetworkReply*);
 private:
     void InitUi();
 private:
