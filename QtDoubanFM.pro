@@ -13,7 +13,9 @@ SOURCES += \
     Fm/IAction.cpp \
     Fm/IActor.cpp \
     Fm/ActionFactory.cpp \
-    Fm/SongAction.cpp
+    Fm/SongAction.cpp \
+    Fm/Web/DouBanWeb.cpp \
+    Fm/ActionDispatch.cpp
 
 HEADERS += \
     MainWindow.h \
@@ -23,7 +25,10 @@ HEADERS += \
     Fm/IActor.h \
     Fm/Common.h \
     Fm/ActionFactory.h \
-    Fm/SongAction.h
+    Fm/SongAction.h \
+    Fm/Web/DouBanWeb.h \
+    Fm/ActionDispatch.h \
+    Fm/Type/DouBanSong.h
 
 FORMS += \
     MainWindow.ui \

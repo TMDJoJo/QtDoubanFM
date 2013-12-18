@@ -1,7 +1,7 @@
 #include "SongAction.h"
 #include <QDebug>
 
-#include "./Net/Web.h"
+#include "./Fm/Web/DouBanWeb.h"
 #include <QNetworkReply>
 
 SongAction::SongAction(IActor* actor) :
@@ -32,20 +32,17 @@ bool SongAction::Excute(){
 bool SongAction::NextSong(){
     qDebug()<<"next";
 
-
-    return true;
+    return g_douban_web->GetNewList();
 }
 
 bool SongAction::LikeSong(){
     qDebug()<<"llke";
 
-
-    return true;
+    return g_douban_web->LikeSong();
 }
 
 bool SongAction::TrashSong(){
     qDebug()<<"trash";
 
-
-    return true;
+    return g_douban_web->TrashSong();
 }

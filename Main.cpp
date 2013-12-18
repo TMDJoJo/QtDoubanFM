@@ -1,7 +1,9 @@
 #include <QApplication>
 
 #include "./MainWindow.h"
-#include "./Net/Web.h"
+#include "./Fm/Common.h"
+#include "./Fm/Web/DouBanWeb.h"
+#include "./Fm/ActionDispatch.h"
 
 int main(int argc, char *argv[])
 {
@@ -12,8 +14,16 @@ int main(int argc, char *argv[])
     main_window->setObjectName("main_window");
     main_window->show();
 
-    ////TODO: connect不能用再单例中，否则崩溃
-    Web::Instance().Init();
+    ////客户端与web通信
+    g_douban_web = new DouBanWeb(qApp);
+    Q_ASSERT(g_douban_web);
 
-    return app.exec();
+    g_action_dispatch = new ActionDispatch();
+    Q_ASSERT(g_action_dispatch);
+
+    int re = app.exec();
+
+    SAFE_DELETE(g_action_dispatch);
+    SAFE_DELETE(g_douban_web);
+    return re;
 }

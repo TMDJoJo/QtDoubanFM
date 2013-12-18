@@ -31,15 +31,12 @@ Web::~Web(){
 //    return web_;
 //}
 
-bool Web::Get(const QString& url,const QObject* receiver){
+QNetworkReply* Web::Get(const QString& url){
 
     if(NULL == manage_)
-        return false;
-    ////次函数异步
-    QNetworkReply* reply = manage_->get( QNetworkRequest(QUrl(url)) );
-    connect(manage_, SIGNAL(finished(QNetworkReply*)),
-            receiver, SLOT(method(QNetworkReply*)));
-    return NULL;
+        return NULL;
+    ////函数异步
+    return manage_->get( QNetworkRequest(QUrl(url)) );
 }
 
 void Web::OnReplyFinished(QNetworkReply* reply){
@@ -47,7 +44,7 @@ void Web::OnReplyFinished(QNetworkReply* reply){
     if(NULL == reply)
         return ;
 
-    if (reply->error() == QNetworkReply::NoError){
+    if(reply->error() == QNetworkReply::NoError){
         //read some thing
         //qDebug()<<QString::fromUtf8( reply->readAll() );
         QString str = QString::fromUtf8( reply->readAll() );

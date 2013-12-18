@@ -20,7 +20,7 @@ public:
                 this, SLOT(OnReplyFinished(QNetworkReply*)));
     }
     ~Web();
-    bool Get(const QString& url,const QObject* receiver);
+    QNetworkReply* Get(const QString& url);
 signals:
     
 private slots:

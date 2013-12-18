@@ -68,14 +68,15 @@ void PlayScene::OnLikeButtonClicked(){
         this->setStyleSheet(file.readAll());
     }
     file.close();
+
+    SongAction* action = dynamic_cast<SongAction*>(
+                ActionFactory::CreateAction(this,ActionFactory::SONG_LIKE)
+                );
+    action->Excute();
+    SAFE_DELETE(action);
 }
-#include <QNetworkReply>
-#include "../Net/Web.h"
+
 void PlayScene::OnNextButtonClicked(){
-    //Web* web = new Web();
-    Web::Instance().Get(
-                "http://douban.fm/j/mine/playlist?type=n&sid=&pt=0.0&channel=6&from=mainsite&r=54fb71862a",
-                this);
 
     SongAction* action = dynamic_cast<SongAction*>(
                 ActionFactory::CreateAction(this,ActionFactory::SONG_NEXT)
@@ -89,9 +90,9 @@ void PlayScene::method(QNetworkReply* replay){
 }
 
 void PlayScene::OnTrashButtonClicked(){
-    SongAction* action = dynamic_cast<SongAction*>(
-                ActionFactory::CreateAction(this,ActionFactory::SONG_TRASH)
-                );
-    action->Excute();
-    SAFE_DELETE(action);
+    IAction* action = ActionFactory::CreateAction(this,ActionFactory::SONG_TRASH);
+    Q_ASSERT(action);
+    SongAction* song_action = dynamic_cast<SongAction*>(action);
+    song_action->Excute();
+    SAFE_DELETE(song_action);
 }
