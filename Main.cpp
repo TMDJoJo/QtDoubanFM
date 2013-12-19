@@ -4,6 +4,7 @@
 #include "./Fm/Common.h"
 #include "./Fm/Web/DouBanWeb.h"
 #include "./Fm/ActionDispatch.h"
+#include "./Fm/Music/Music.h"
 
 int main(int argc, char *argv[])
 {
@@ -18,12 +19,16 @@ int main(int argc, char *argv[])
     g_douban_web = new DouBanWeb(qApp);
     Q_ASSERT(g_douban_web);
 
+    g_music = new Music();
+    Q_ASSERT(g_music);
+
     g_action_dispatch = new ActionDispatch();
     Q_ASSERT(g_action_dispatch);
 
     int re = app.exec();
 
     SAFE_DELETE(g_action_dispatch);
+    SAFE_DELETE(g_music);
     SAFE_DELETE(g_douban_web);
     return re;
 }

@@ -4,6 +4,7 @@
 #include <QObject>
 #include <QNetworkAccessManager>
 #include <QNetworkReply>
+#include "../Type/DouBanSong.h"
 
 const QChar GET_SONG_NEXT = 's';    ////return song list
 const QChar GET_SONG_LIKE = 'r';    ////return song list
@@ -24,6 +25,9 @@ public:
     bool GetNewList(/*prame*/);
     bool LikeSong(/*prame*/);
     bool TrashSong(/*prame*/);
+
+signals:
+    void ReceivedNewList(SongList*);
 
 private slots:
     void OnReceivedNewList();

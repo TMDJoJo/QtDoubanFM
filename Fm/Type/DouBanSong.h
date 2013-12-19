@@ -33,13 +33,13 @@ struct DouBanSong_T{
     QString title_;
     QString sha256_;
     QString albumtitle_;
-    QString subtype;
+    QString subtype_;
     QString public_time_;
+    QString aid_;
+    QString kbps_;
+    QString sid_;
     double rating_avg_;
     quint32 length_;
-    quint32 sid_;
-    quint32 aid_;
-    quint32 kbps_;
     bool like_;
 };
 

@@ -6,6 +6,7 @@
 
 #include "../Fm/ActionFactory.h"
 #include "../Fm/SongAction.h"
+#include "../Fm/ActionDispatch.h"
 
 PlayScene::PlayScene(QWidget *parent) :
     QWidget(parent),
@@ -69,30 +70,13 @@ void PlayScene::OnLikeButtonClicked(){
     }
     file.close();
 
-    SongAction* action = dynamic_cast<SongAction*>(
-                ActionFactory::CreateAction(this,ActionFactory::SONG_LIKE)
-                );
-    action->Excute();
-    SAFE_DELETE(action);
+    g_action_dispatch->ActionSong(this,ActionFactory::SONG_LIKE);
 }
 
 void PlayScene::OnNextButtonClicked(){
-
-    SongAction* action = dynamic_cast<SongAction*>(
-                ActionFactory::CreateAction(this,ActionFactory::SONG_NEXT)
-                );
-    action->Excute();
-    SAFE_DELETE(action);
-}
-
-void PlayScene::method(QNetworkReply* replay){
-    qDebug()<<replay->readAll();
+    g_action_dispatch->ActionSong(this,ActionFactory::SONG_NEXT);
 }
 
 void PlayScene::OnTrashButtonClicked(){
-    IAction* action = ActionFactory::CreateAction(this,ActionFactory::SONG_TRASH);
-    Q_ASSERT(action);
-    SongAction* song_action = dynamic_cast<SongAction*>(action);
-    song_action->Excute();
-    SAFE_DELETE(song_action);
+    g_action_dispatch->ActionSong(this,ActionFactory::SONG_TRASH);
 }

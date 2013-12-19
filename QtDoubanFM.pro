@@ -1,4 +1,5 @@
-QT += network
+QT += network \
+      phonon
 SOURCES += \
     Main.cpp \
     MainWindow.cpp \
@@ -15,7 +16,8 @@ SOURCES += \
     Fm/ActionFactory.cpp \
     Fm/SongAction.cpp \
     Fm/Web/DouBanWeb.cpp \
-    Fm/ActionDispatch.cpp
+    Fm/ActionDispatch.cpp \
+    Fm/Music/Music.cpp
 
 HEADERS += \
     MainWindow.h \
@@ -28,7 +30,8 @@ HEADERS += \
     Fm/SongAction.h \
     Fm/Web/DouBanWeb.h \
     Fm/ActionDispatch.h \
-    Fm/Type/DouBanSong.h
+    Fm/Type/DouBanSong.h \
+    Fm/Music/Music.h
 
 FORMS += \
     MainWindow.ui \

@@ -26,7 +26,6 @@ private slots:
     void OnLikeButtonClicked();
     void OnNextButtonClicked();
     void OnTrashButtonClicked();
-    void method(QNetworkReply*);
 private:
     void InitUi();
 private:
