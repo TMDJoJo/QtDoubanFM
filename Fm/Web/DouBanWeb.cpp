@@ -27,7 +27,7 @@ QNetworkReply* DouBanWeb::Get(const QString& url){
 
 bool DouBanWeb::GetNewList(/*prame*/){
     QNetworkReply* reply = Get(
-                "http://douban.fm/j/mine/playlist?type=n&sid=&pt=0.0&channel=6&from=mainsite&r=54fb71862a"
+                "http://douban.fm/j/mine/playlist?type=n&channel=2&pb=64&from=mainsite"
                 );
     connect(reply, SIGNAL(finished()),
             this, SLOT(OnReceivedNewList()));
@@ -41,6 +41,14 @@ bool DouBanWeb::LikeSong(/*prame*/){
 
 bool DouBanWeb::TrashSong(/*prame*/){
 
+    return true;
+}
+
+bool DouBanWeb::GetAlbumPicture(const QString url){
+    QNetworkReply* reply = Get(url);
+    if(NULL == reply)
+        return false;
+    connect(reply,SIGNAL(finished()),this,SLOT(OnReceivedAlbumPicture()));
     return true;
 }
 
@@ -104,4 +112,20 @@ void DouBanWeb::OnReceivedNewList(){
 
     SAFE_DELETE(reader);
     SAFE_DELETE(root);
+}
+#include <QPixmap>
+void DouBanWeb::OnReceivedAlbumPicture(){
+    QNetworkReply* reply = dynamic_cast<QNetworkReply*>(sender());
+    ////接收到新播放列表
+    Q_ASSERT(reply);
+    if(reply->error() == QNetworkReply::NoError){
+        QPixmap* picture = new QPixmap();
+        Q_ASSERT(picture);
+        if( !picture->loadFromData(reply->readAll()) ){
+            reply->deleteLater();
+            return;
+        }
+        reply->deleteLater();
+        emit ReceivedAlbumPicture(picture);
+    }
 }

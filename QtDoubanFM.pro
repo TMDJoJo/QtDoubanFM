@@ -17,7 +17,8 @@ SOURCES += \
     Fm/SongAction.cpp \
     Fm/Web/DouBanWeb.cpp \
     Fm/ActionDispatch.cpp \
-    Fm/Music/Music.cpp
+    Fm/Music/Music.cpp \
+    Scene/PlayTimeSlider.cpp
 
 HEADERS += \
     MainWindow.h \
@@ -31,7 +32,8 @@ HEADERS += \
     Fm/Web/DouBanWeb.h \
     Fm/ActionDispatch.h \
     Fm/Type/DouBanSong.h \
-    Fm/Music/Music.h
+    Fm/Music/Music.h \
+    Scene/PlayTimeSlider.h
 
 FORMS += \
     MainWindow.ui \

@@ -28,7 +28,7 @@ Music::Music(QObject *parent) :
 }
 
 void Music::OnTick(qint64 play_time){
-    qDebug()<<play_time;
+    emit PlayTimeTick(play_time);
 }
 
 void Music::OnStateChanged(Phonon::State new_state, Phonon::State old_state){
@@ -67,15 +67,19 @@ bool Music::set_song_list(SongList* song_list){
 }
 
 bool Music::Next(){
+    if(NULL == song_list_
+        || song_list_->isEmpty()){
+        emit GetNewList();
+        return false;
+    }
 
     if(media_object_->state() == Phonon::PlayingState)
         media_object_->stop();
     SAFE_DELETE(current_song_);
-    if(song_list_->front() == *(song_list_->end())){
-        return false;
-    }
     current_song_ = song_list_->front();
     song_list_->pop_front();
+    emit PlaySong(current_song_);
+
     media_object_->setCurrentSource(QUrl(current_song_->url_));
     media_object_->play();
     return true;

@@ -15,7 +15,8 @@ public:
 
 signals:
     void GetNewList();
-
+    void PlayTimeTick(qint64);
+    void PlaySong(DouBanSong* song);
 private slots:
     void OnTick(qint64);
     void OnStateChanged(Phonon::State new_state, Phonon::State old_state);

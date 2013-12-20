@@ -53,3 +53,32 @@ QToolButton#tbtn_next:pressed
 {
         border-image:url(:/Img/Resource/Img/next_normal.png) 0 0 0 0 stretch stretch;
 }
+/*
+* ±º‰Ãı
+*http://www.360doc.com/content/12/1115/07/6828497_247929728.shtml
+*/
+QSlider#play_time::groove:horizontal
+{
+        border:1px solid rgb(229,229,232);
+        background:rgb(229,229,232);
+        height:1px;
+        margin:0px;
+        left:1px;
+        right:1px;
+}
+
+QSlider#play_time::handle:horizontal
+{
+        border:1px solid rgb(157,214,197);
+        /*
+        width:0px;
+        margin:1px 1px 1px 1px;
+        */
+}
+QSlider#play_time::sub-page:horizontal
+{
+        background:rgb(157,214,197);
+        /*
+        background:qlineargradient(spread:pad, x1:0, y1:1, x2:0, y2:0, stop:0 rgba(27, 5, 27, 255), stop:0.25 rgba(99, 20, 102, 255), stop:0.5 rgba(154, 30, 158, 255), stop:1 rgba(173, 57, 176, 255))
+        */
+}

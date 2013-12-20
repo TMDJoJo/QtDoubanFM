@@ -10,11 +10,6 @@ int main(int argc, char *argv[])
 {
     QApplication app(argc, argv);
 
-    MainWindow* main_window = new MainWindow();
-    Q_ASSERT(main_window);
-    main_window->setObjectName("main_window");
-    main_window->show();
-
     ////客户端与web通信
     g_douban_web = new DouBanWeb(qApp);
     Q_ASSERT(g_douban_web);
@@ -24,6 +19,11 @@ int main(int argc, char *argv[])
 
     g_action_dispatch = new ActionDispatch();
     Q_ASSERT(g_action_dispatch);
+
+    MainWindow* main_window = new MainWindow();
+    Q_ASSERT(main_window);
+    main_window->setObjectName("main_window");
+    main_window->show();
 
     int re = app.exec();
 

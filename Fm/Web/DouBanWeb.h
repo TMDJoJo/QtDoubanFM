@@ -4,6 +4,8 @@
 #include <QObject>
 #include <QNetworkAccessManager>
 #include <QNetworkReply>
+#include <QPixmap>
+
 #include "../Type/DouBanSong.h"
 
 const QChar GET_SONG_NEXT = 's';    ////return song list
@@ -25,12 +27,13 @@ public:
     bool GetNewList(/*prame*/);
     bool LikeSong(/*prame*/);
     bool TrashSong(/*prame*/);
-
+    bool GetAlbumPicture(const QString url);
 signals:
     void ReceivedNewList(SongList*);
-
+    void ReceivedAlbumPicture(QPixmap*);
 private slots:
     void OnReceivedNewList();
+    void OnReceivedAlbumPicture();
 private:
     QNetworkReply* Get(const QString& url);
 

@@ -2,9 +2,11 @@
 #define PLAYSCENE_H
 
 #include <QWidget>
+#include <QPixmap>
 
 #include "../Fm/IActor.h"
 #include <QNetworkReply>
+#include "../Fm/Type/DouBanSong.h"
 
 namespace Ui {
 class PlayScene;
@@ -19,9 +21,13 @@ public:
     ~PlayScene();
 
     virtual bool Excute();
+    void set_play_time(qint64 play_time);
+    void SetSongInfo(DouBanSong*);
+    void SetAlbumPicture(QPixmap*);
 
 protected:
     void paintEvent(QPaintEvent* event);
+
 private slots:
     void OnLikeButtonClicked();
     void OnNextButtonClicked();
