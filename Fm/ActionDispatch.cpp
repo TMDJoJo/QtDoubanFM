@@ -1,13 +1,20 @@
 #include "ActionDispatch.h"
 
-#include "SongAction.h"
 #include "./Web/DouBanWeb.h"
 #include "./Music/Music.h"
+
+const QChar GET_SONG_NEXT = 's';        ////return song list
+const QChar GET_SONG_LIKE = 'r';        ////return song list
+const QChar GET_SONG_UNLIKE = 'u';      ////return song list
+const QChar GET_SONG_ENDSONG = 'e';     ////return {"r":0}
+const QChar GET_SONG_TRASH = 'b';       ////return song list
+const QChar GET_SONG_ENDLIST = 'n';     ////return song list
 
 ActionDispatch* g_action_dispatch = NULL;
 
 ActionDispatch::ActionDispatch(QObject *parent) :
-    QObject(parent)
+    QObject(parent),
+    is_next_(false)
 {
 
 
@@ -16,30 +23,81 @@ ActionDispatch::ActionDispatch(QObject *parent) :
     connect(g_douban_web,SIGNAL(ReceivedAlbumPicture(QPixmap*)),
             this,SLOT(OnReceivedAlbumPicture(QPixmap*)));
 
-    connect(g_music,SIGNAL(GetNewList()),
-            this,SLOT(OnReceiveNewList()));
+    connect(g_music,SIGNAL(EmptyList()),
+            this,SLOT(OnEmptyList()));
     connect(g_music,SIGNAL(PlayTimeTick(qint64)),
             this,SLOT(OnPlayTimeTick(qint64)));
     connect(g_music,SIGNAL(PlaySong(DouBanSong*)),
             this,SLOT(OnPlaySong(DouBanSong*)));
 
-
+    OnEmptyList();
+    GetChannelId();
 }
 
-bool ActionDispatch::ActionSong(IActor* actor,ActionFactory::ActionType type){
-    SongAction* action = dynamic_cast<SongAction*>(
-                ActionFactory::CreateAction(actor,type)
-                );
-    action->Excute();
-    SAFE_DELETE(action);
-    return true;
-}
+//bool ActionDispatch::ActionSong(IActor* actor,ActionFactory::ActionType type){
+//    SongAction* action = dynamic_cast<SongAction*>(
+//                ActionFactory::CreateAction(actor,type)
+//                );
+//    action->Excute();
+//    SAFE_DELETE(action);
+//    return true;
+//}
 
 bool ActionDispatch::set_play_scene(PlayScene* play_scene){
     if(NULL == play_scene)
         return false;
     play_scene_ = play_scene;
     return true;
+}
+
+void ActionDispatch::Next(){
+    QString song_id = "";
+    if(g_music->current_song() != NULL)
+        song_id = g_music->current_song()->sid_;
+    QString play_time = QString("%1").arg(float(g_music->PlayTime()/100)/10);
+    QString type = GET_SONG_NEXT;
+    QString arg = QString("type=%1&sid=%2&pt=%3&channel=%4&pb=%5&from=%6").arg(
+                type,song_id,play_time,QString::number(1),QString::number(64),"mainsite");
+    g_douban_web->GetNewList(arg);
+    is_next_ = true;
+}
+
+void ActionDispatch::Like(bool like){
+    QString song_id = "";
+    if(g_music->current_song() != NULL)
+        song_id = g_music->current_song()->sid_;
+    QString play_time = QString("%1").arg(float(g_music->PlayTime()/100)/10);
+    QString type = "";
+    if(like){
+        type = GET_SONG_LIKE;
+    }
+    else{
+        type = GET_SONG_UNLIKE;
+    }
+    QString arg = QString("type=%1&sid=%2&pt=%3&channel=%4&pb=%5&from=%6").arg(
+                type,song_id,play_time,QString::number(6),QString::number(64),"mainsite");
+    g_douban_web->LikeSong(arg);
+}
+
+void ActionDispatch::Trash(){
+    if(g_music->current_song() == NULL)
+        return;
+    QString song_id = g_music->current_song()->sid_;
+    QString play_time = QString("%1").arg(float(g_music->PlayTime()/100)/10);
+    QString type = GET_SONG_TRASH;
+    QString arg = QString("type=%1&sid=%2&pt=%3&channel=%4&pb=%5&from=%6").arg(
+                type,song_id,play_time,QString::number(6),QString::number(64),"mainsite");
+    g_douban_web->TrashSong(arg);
+    is_next_ = true;
+}
+
+void ActionDispatch::SetVolume(quint8 value){
+    g_music->SetVolume(value);
+}
+
+void ActionDispatch::GetChannelId(){
+    QString arg = "http://douban.fm";
+    g_douban_web->GetChannelId(arg);
 }
 
 void ActionDispatch::OnReceivedAlbumPicture(QPixmap* picture){
@@ -49,13 +107,27 @@ void ActionDispatch::OnReceivedAlbumPicture(QPixmap* picture){
 }
 
 void ActionDispatch::OnReceivedNewList(SongList* song_list){
-    ////获得播放列表后将其设置给播放器
+    ////获得播放列表完成，将其设置给播放器
     g_music->set_song_list(song_list);
+    if(is_next_){
+        g_music->Next();
+        is_next_ = false;
+    }
 }
 
-void ActionDispatch::OnReceiveNewList(){
+void ActionDispatch::OnEmptyList(){
+    ////播放列表放完以后，重新get新列表
+    QString song_id = "";
+    if(g_music->current_song() != NULL)
+        song_id = g_music->current_song()->sid_;
+    QString play_time = QString("%1").arg(float(g_music->PlayTime()/100)/10);
+    QString type = GET_SONG_ENDLIST;
+
+    QString arg = QString("type=%1&sid=%2&pt=%3&channel=%4&pb=%5&from=%6").arg(
+                type,song_id,play_time,QString::number(6),QString::number(64),"mainsite");
     ////当前列表播放接受后继续获得下一列表
-    g_douban_web->GetNewList();
+    g_douban_web->GetNewList(arg);
+    is_next_ = true;
 }
 
 void ActionDispatch::OnPlayTimeTick(qint64 play_time){
@@ -67,7 +139,9 @@ void ActionDispatch::OnPlaySong(DouBanSong* song){
     ////
     if(NULL == song)
         return;
-    g_douban_web->GetAlbumPicture(song->picture_);
+    ////将低清图地址http://img3.douban.com/mpic/s2693584.jpg
+    ////转为 高清图地址http://img3.douban.com/lpic/s2693584.jpg
+    QString pic_url = song->picture_.replace("mpic","lpic");
+    g_douban_web->GetAlbumPicture(pic_url);
     play_scene_->SetSongInfo(song);
-
 }

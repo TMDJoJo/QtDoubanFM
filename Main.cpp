@@ -1,4 +1,5 @@
 #include <QApplication>
+#include <QTextCodec>
 
 #include "./MainWindow.h"
 #include "./Fm/Common.h"
@@ -9,6 +10,11 @@
 int main(int argc, char *argv[])
 {
     QApplication app(argc, argv);
+
+    //QTextCodec::setCodecForTr(QTextCodec::codecForName("GBK"));
+    QTextCodec::setCodecForLocale(QTextCodec::codecForName("utf-8"));
+    QTextCodec::setCodecForCStrings(QTextCodec::codecForName("utf-8"));
+    QTextCodec::setCodecForTr(QTextCodec::codecForName("utf-8"));
 
     ////客户端与web通信
     g_douban_web = new DouBanWeb(qApp);

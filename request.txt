@@ -46,3 +46,29 @@
 
 ////
 //http://douban.fm/j/change_channel?fcid=1&tcid=6&area=fav_chls
+
+
+
+
+//////////////////////////////////////////////
+1\    http://douban.fm/j/explore/is_fav_channel?cid=1004158
+data: {res:{is_fav:false}}
+res: {is_fav:false}
+is_fav: false
+status: true
+
+2\    http://douban.fm/j/change_channel?fcid=undefined&tcid=1004158&area=recent_chls
+r: "0"
+
+3\    http://douban.fm/j/mine/playlist?type=n&sid=&pt=0.0&channel=1004158&from=mainsite&r=80a6223009
+kind: "session"
+r: 0
+song: [,бн]
+
+
+
+NEXT\    http://douban.fm/j/mine/playlist?type=s&sid=1106796&pt=3.4&channel=1004158&pb=64&from=mainsite&r=714eb24803
+
+TRACK\   http://douban.fm/j/mine/playlist?type=b&sid=1825255&pt=7.3&channel=1004158&pb=64&from=mainsite&r=e16815eb22
+
+

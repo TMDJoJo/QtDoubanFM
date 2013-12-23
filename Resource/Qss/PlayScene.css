@@ -1,4 +1,8 @@
 /*
+*音乐播放界面CSS
+*/
+
+/*
 *喜欢按钮样式
 */
 QToolButton#tbtn_like_normal
@@ -82,3 +86,13 @@ QSlider#play_time::sub-page:horizontal
         background:qlineargradient(spread:pad, x1:0, y1:1, x2:0, y2:0, stop:0 rgba(27, 5, 27, 255), stop:0.25 rgba(99, 20, 102, 255), stop:0.5 rgba(154, 30, 158, 255), stop:1 rgba(173, 57, 176, 255))
         */
 }
+
+/*
+*歌曲名
+*/
+QLabel#lbe_song_name
+{
+        color:rgb(51,173,133);
+}
+
+

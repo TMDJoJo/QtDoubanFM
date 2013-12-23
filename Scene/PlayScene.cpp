@@ -5,8 +5,6 @@
 #include <QPainter>
 #include <QBrush>
 
-#include "../Fm/ActionFactory.h"
-#include "../Fm/SongAction.h"
 #include "../Fm/ActionDispatch.h"
 
 PlayScene::PlayScene(QWidget *parent) :
@@ -19,7 +17,6 @@ PlayScene::PlayScene(QWidget *parent) :
 
     g_action_dispatch->set_play_scene(this);
 
-    OnNextButtonClicked();
 }
 
 PlayScene::~PlayScene()
@@ -38,17 +35,13 @@ void PlayScene::InitUi(){
 
     ui->tbtn_like->setObjectName("tbtn_like_normal");
 
+    ui->volume->setRange(0,100);
+    ui->volume->setSliderPosition(100);
+
     connect(ui->tbtn_like,SIGNAL(clicked()),this,SLOT(OnLikeButtonClicked()));
     connect(ui->tbtn_trash,SIGNAL(clicked()),this,SLOT(OnTrashButtonClicked()));
     connect(ui->tbtn_next,SIGNAL(clicked()),this,SLOT(OnNextButtonClicked()));
-
-    ui->play_time->setTracking(false);
-    ui->play_time->setRange(0,120);
-}
-
-bool PlayScene::Excute(){
-    ////消息回调
-    return true;
+    connect(ui->volume,SIGNAL(valueChanged(int)),this,SLOT(OnValueChanged (int)));
 }
 
 void PlayScene::set_play_time(qint64 play_time){
@@ -61,10 +54,24 @@ void PlayScene::set_play_time(qint64 play_time){
 void PlayScene::SetSongInfo(DouBanSong* song){
     if(NULL == song)
         return;
-    ui->lbe_singer_name->setText(song->artist_);
-    ui->lbe_album_name->setText("<" + song->albumtitle_ + "> " + song->public_time_);
+    ui->lbe_singer_name->setText(song->artist_.toStdString().c_str());
+    ui->lbe_album_name->setText(("<" + song->albumtitle_ + "> " + song->public_time_));
     ui->lbe_song_name->setText(song->title_);
     ui->play_time->setRange(0,song->length_);
+    if(!song->like_){
+        ui->tbtn_like->setObjectName("tbtn_like_normal");
+        is_liked_ = false;
+    }
+    else{
+        ui->tbtn_like->setObjectName("tbtn_like_liked");
+        is_liked_ = true;
+    }
+    ////设置QSS样式表
+    QFile file(":/Qss/Resource/Qss/PlayScene.css");
+    if (file.open(QIODevice::ReadOnly)){
+        ui->tbtn_like->setStyleSheet(file.readAll());
+    }
+    file.close();
 
 }
 
@@ -96,26 +103,31 @@ void PlayScene::OnLikeButtonClicked(){
     if(is_liked_){
         ui->tbtn_like->setObjectName("tbtn_like_normal");
         is_liked_ = false;
+        g_action_dispatch->Like(false);
     }
     else{
         ui->tbtn_like->setObjectName("tbtn_like_liked");
         is_liked_ = true;
+        g_action_dispatch->Like(true);
     }
 
     ////设置QSS样式表
     QFile file(":/Qss/Resource/Qss/PlayScene.css");
     if (file.open(QIODevice::ReadOnly)){
-        this->setStyleSheet(file.readAll());
+        ui->tbtn_like->setStyleSheet(file.readAll());
     }
     file.close();
 
-    g_action_dispatch->ActionSong(this,ActionFactory::SONG_LIKE);
 }
 
 void PlayScene::OnNextButtonClicked(){
-    g_action_dispatch->ActionSong(this,ActionFactory::SONG_NEXT);
+    g_action_dispatch->Next();
 }
 
 void PlayScene::OnTrashButtonClicked(){
-    g_action_dispatch->ActionSong(this,ActionFactory::SONG_TRASH);
+    g_action_dispatch->Trash();
+}
+
+void PlayScene::OnValueChanged(int value){
+    g_action_dispatch->SetVolume(value);
 }

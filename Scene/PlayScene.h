@@ -4,7 +4,6 @@
 #include <QWidget>
 #include <QPixmap>
 
-#include "../Fm/IActor.h"
 #include <QNetworkReply>
 #include "../Fm/Type/DouBanSong.h"
 
@@ -12,7 +11,7 @@ namespace Ui {
 class PlayScene;
 }
 
-class PlayScene : public QWidget ,public IActor
+class PlayScene : public QWidget
 {
     Q_OBJECT
     
@@ -20,7 +19,6 @@ public:
     explicit PlayScene(QWidget *parent = 0);
     ~PlayScene();
 
-    virtual bool Excute();
     void set_play_time(qint64 play_time);
     void SetSongInfo(DouBanSong*);
     void SetAlbumPicture(QPixmap*);
@@ -32,6 +30,7 @@ private slots:
     void OnLikeButtonClicked();
     void OnNextButtonClicked();
     void OnTrashButtonClicked();
+    void OnValueChanged(int value);
 private:
     void InitUi();
 private:

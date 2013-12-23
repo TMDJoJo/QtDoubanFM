@@ -18,6 +18,10 @@ Music::Music(QObject *parent) :
     media_object_ = new Phonon::MediaObject(this);
     Q_ASSERT(media_object_);
     media_object_->setTickInterval(1000);
+//    volume_slider_ = new Phonon::VolumeSlider();
+//    Q_ASSERT(volume_slider_);
+//    volume_slider_->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
+//    volume_slider_->setAudioOutput(audio_output_);
 
     Phonon::createPath(media_object_, audio_output_);
 
@@ -44,7 +48,7 @@ void Music::OnStateChanged(Phonon::State new_state, Phonon::State old_state){
 void Music::OnAboutToFinish(){
     if(song_list_->isEmpty()){
         //// end of a list
-        emit GetNewList();
+        emit EmptyList();
     }
     else{
         Next();
@@ -63,13 +67,18 @@ bool Music::set_song_list(SongList* song_list){
         SAFE_DELETE(song_list_);
     }
     song_list_ = song_list;
-    return Next();
+    return true;
+}
+
+qint64 Music::PlayTime(){
+
+    return media_object_->currentTime();
 }
 
 bool Music::Next(){
     if(NULL == song_list_
         || song_list_->isEmpty()){
-        emit GetNewList();
+        emit EmptyList();
         return false;
     }
 
@@ -83,4 +92,9 @@ bool Music::Next(){
     media_object_->setCurrentSource(QUrl(current_song_->url_));
     media_object_->play();
     return true;
+}
+
+void Music::SetVolume(quint8 value){
+    qreal v = float(value)/100;
+    audio_output_->setVolume(v);
 }

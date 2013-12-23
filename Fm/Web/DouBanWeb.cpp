@@ -1,5 +1,6 @@
 #include "DouBanWeb.h"
 #include <QDebug>
+#include <QPixmap>
 
 #include "Include/json/json.h"
 #include "../Common.h"
@@ -25,30 +26,46 @@ QNetworkReply* DouBanWeb::Get(const QString& url){
     return network_manage_->get( QNetworkRequest(QUrl(url)) );
 }
 
-bool DouBanWeb::GetNewList(/*prame*/){
+bool DouBanWeb::GetNewList(const QString& arg){
     QNetworkReply* reply = Get(
-                "http://douban.fm/j/mine/playlist?type=n&channel=2&pb=64&from=mainsite"
+                "http://douban.fm/j/mine/playlist?" + arg
                 );
     connect(reply, SIGNAL(finished()),
             this, SLOT(OnReceivedNewList()));
     return true;
 }
 
-bool DouBanWeb::LikeSong(/*prame*/){
-
+bool DouBanWeb::LikeSong(const QString& arg){
+    QNetworkReply* reply = Get(
+                "http://douban.fm/j/mine/playlist?" + arg
+                );
+    connect(reply, SIGNAL(finished()),
+            this, SLOT(OnReceivedNewList()));
     return true;
 }
 
-bool DouBanWeb::TrashSong(/*prame*/){
-
+bool DouBanWeb::TrashSong(const QString& arg){
+    QNetworkReply* reply = Get(
+                "http://douban.fm/j/mine/playlist?" + arg
+                );
+    connect(reply, SIGNAL(finished()),
+            this, SLOT(OnReceivedNewList()));
     return true;
 }
 
-bool DouBanWeb::GetAlbumPicture(const QString url){
+bool DouBanWeb::GetAlbumPicture(const QString& url){
     QNetworkReply* reply = Get(url);
     if(NULL == reply)
         return false;
     connect(reply,SIGNAL(finished()),this,SLOT(OnReceivedAlbumPicture()));
+    return true;
+}
+
+bool DouBanWeb::GetChannelId(const QString& url){
+    QNetworkReply* reply = Get(url);
+    if(NULL == reply)
+        return false;
+    connect(reply,SIGNAL(finished()),this,SLOT(OnReceivedChannelId()));
     return true;
 }
 
@@ -58,17 +75,18 @@ void DouBanWeb::OnReceivedNewList(){
     Q_ASSERT(reply);
     QString reply_string = QString::fromUtf8(reply->readAll());
     reply->deleteLater();
-
     ////处理jsons
     Json::Reader* reader = new Json::Reader;
     Q_ASSERT(reader);
     Json::Value* root = new Json::Value;
     Q_ASSERT(root);
-    if(reader->parse(reply_string.toStdString(),*root)){
+    if(reader->parse(reply_string.toUtf8().data(),*root)){
         // reader将Json字符串解析到root，root将包含Json里所有子元素
 
         if((*root)["r"].isNull()
                 ||(*root)["r"].asInt() != 0){
+            QString err_string = (*root)["err"].asString().c_str();
+            qDebug()<<err_string;
             ////接受错误
             SAFE_DELETE(reader);
             SAFE_DELETE(root);
@@ -113,7 +131,7 @@ void DouBanWeb::OnReceivedNewList(){
     SAFE_DELETE(reader);
     SAFE_DELETE(root);
 }
-#include <QPixmap>
+
 void DouBanWeb::OnReceivedAlbumPicture(){
     QNetworkReply* reply = dynamic_cast<QNetworkReply*>(sender());
     ////接收到新播放列表
@@ -128,4 +146,41 @@ void DouBanWeb::OnReceivedAlbumPicture(){
         reply->deleteLater();
         emit ReceivedAlbumPicture(picture);
     }
+}
+#include <QFile>
+void DouBanWeb::OnReceivedChannelId(){
+    QNetworkReply* reply = dynamic_cast<QNetworkReply*>(sender());
+    ////接收到新播放列表
+    Q_ASSERT(reply);
+    if(reply->error() == QNetworkReply::NoError){
+
+        QString douban_fm_html = reply->readAll();
+//        QFile file("./aaa.txt");
+//        file.open(QIODevice::ReadWrite);
+//        file.write(douban_fm_html.toStdString().c_str());
+//        file.close();
+//        douban_fm_html
+
+        QRegExp reg(".*window.hot_channels_json = \\[(.*)\\];\n.*window.fast_channels_json = \\[(.*)\\];\n.*window.com_channels_json =.*");
+        if(reg.exactMatch(douban_fm_html)){
+            qDebug()<<reg.cap(1);
+            qDebug()<<reg.cap(2);
+//            qDebug()<<reg.cap(3);
+        }
+
+//        QStringList labelList = douban_fm_html.split('\n');
+//        qDebug()<<labelList.size();
+//        QStringList::Iterator it = labelList.begin();
+//        while(it != labelList.end()){
+//            QRegExp reg(".*window.hot_channels_json = \\[(.+)\\];");
+
+//            if(reg.exactMatch(*it)){
+//                qDebug()<<reg.cap(1);
+//                //qDebug()<<*it;
+//            }
+
+//            ++it;
+//        }
+    }
+
 }

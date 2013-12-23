@@ -13,8 +13,12 @@ public:
 
     bool set_song_list(SongList* song_list);
 
+    const DouBanSong* current_song(){ return current_song_; }
+    qint64 PlayTime();
+    bool Next();
+    void SetVolume(quint8);
 signals:
-    void GetNewList();
+    void EmptyList();
     void PlayTimeTick(qint64);
     void PlaySong(DouBanSong* song);
 private slots:
@@ -23,12 +27,9 @@ private slots:
     void OnAboutToFinish();
 
 private:
-    bool Next();
-
-private:
     Phonon::AudioOutput* audio_output_;
     Phonon::MediaObject* media_object_;
-
+//    Phonon::VolumeSlider* volume_slider_;
     DouBanSong* current_song_;
     SongList* song_list_;
 };
