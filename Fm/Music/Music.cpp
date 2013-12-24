@@ -98,3 +98,11 @@ void Music::SetVolume(quint8 value){
     qreal v = float(value)/100;
     audio_output_->setVolume(v);
 }
+
+void Music::Pause(){
+    media_object_->pause();
+}
+
+void Music::Play(){
+    media_object_->play();
+}

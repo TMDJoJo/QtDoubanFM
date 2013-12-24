@@ -23,6 +23,11 @@ ActionDispatch::ActionDispatch(QObject *parent) :
     connect(g_douban_web,SIGNAL(ReceivedAlbumPicture(QPixmap*)),
             this,SLOT(OnReceivedAlbumPicture(QPixmap*)));
 
+    connect(g_douban_web,SIGNAL(ReceivedHotChannels(ChannelList*)),
+            this,SLOT(OnReceivedHotChannels(ChannelList*)));
+    connect(g_douban_web,SIGNAL(ReceivedFastChannels(ChannelList*)),
+            this,SLOT(OnReceivedFastChannels(ChannelList*)));
+
     connect(g_music,SIGNAL(EmptyList()),
             this,SLOT(OnEmptyList()));
     connect(g_music,SIGNAL(PlayTimeTick(qint64)),
@@ -30,23 +35,22 @@ ActionDispatch::ActionDispatch(QObject *parent) :
     connect(g_music,SIGNAL(PlaySong(DouBanSong*)),
             this,SLOT(OnPlaySong(DouBanSong*)));
 
-    OnEmptyList();
+    //OnEmptyList();
+    ChangeChannel(0,0);
     GetChannelId();
 }
-
-//bool ActionDispatch::ActionSong(IActor* actor,ActionFactory::ActionType type){
-//    SongAction* action = dynamic_cast<SongAction*>(
-//                ActionFactory::CreateAction(actor,type)
-//                );
-//    action->Excute();
-//    SAFE_DELETE(action);
-//    return true;
-//}
 
 bool ActionDispatch::set_play_scene(PlayScene* play_scene){
     if(NULL == play_scene)
         return false;
     play_scene_ = play_scene;
+    return true;
+}
+
+bool ActionDispatch::set_channel_scene(ChannelScene* channel_scene){
+    if(NULL == channel_scene_)
+        return false;
+    channel_scene_ = channel_scene;
     return true;
 }
 
@@ -100,6 +104,26 @@ void ActionDispatch::GetChannelId(){
     g_douban_web->GetChannelId(arg);
 }
 
+void ActionDispatch::Pause(){
+    g_music->Pause();
+}
+
+void ActionDispatch::Play(){
+    g_music->Play();
+}
+
+void ActionDispatch::ChangeChannel(quint32 /*from_channel_id*/,quint32 to_channel_id){
+    QString song_id = "";
+    if(g_music->current_song() != NULL)
+        song_id = g_music->current_song()->sid_;
+    QString play_time = QString("%1").arg(float(g_music->PlayTime()/100)/10);
+    QString type = GET_SONG_ENDLIST;
+    QString arg = QString("type=%1&sid=%2&pt=%3&channel=%4&pb=%5&from=%6").arg(
+                type,song_id,play_time,QString::number(to_channel_id),QString::number(64),"mainsite");
+    g_douban_web->GetNewList(arg);
+    is_next_ = true;
+}
+
 void ActionDispatch::OnReceivedAlbumPicture(QPixmap* picture){
     if(NULL == picture)
         return;
@@ -145,3 +169,36 @@ void ActionDispatch::OnPlaySong(DouBanSong* song){
     g_douban_web->GetAlbumPicture(pic_url);
     play_scene_->SetSongInfo(song);
 }
+
+void ActionDispatch::OnReceivedHotChannels(ChannelList* channel_list){
+    ////channel_scene_
+    if(NULL == channel_list)
+        return;
+    while(!channel_list->isEmpty()){
+        DouBanChannel* channel = channel_list->front();
+        channel_list->pop_front();
+        if(NULL == channel)
+            continue;
+        channel_scene_->AddHotChannel(channel);
+        ////TODO: set channel cover
+        SAFE_DELETE(channel);
+    }
+    SAFE_DELETE(channel_list);
+}
+
+void ActionDispatch::OnReceivedFastChannels(ChannelList* channel_list){
+    ////AddFastChannel
+    if(NULL == channel_list)
+        return;
+    while(!channel_list->isEmpty()){
+        DouBanChannel* channel = channel_list->front();
+        channel_list->pop_front();
+        if(NULL == channel)
+            continue;
+        channel_scene_->AddFastChannel(channel);
+        ////TODO: set channel cover
+        SAFE_DELETE(channel);
+    }
+    SAFE_DELETE(channel_list);
+}
+

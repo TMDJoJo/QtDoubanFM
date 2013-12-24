@@ -7,6 +7,7 @@
 #include <QPixmap>
 
 #include "../Type/DouBanSong.h"
+#include "../Type/DouBanChannel.h"
 
 class DouBanWeb : public QObject
 {
@@ -27,12 +28,16 @@ public:
 signals:
     void ReceivedNewList(SongList*);
     void ReceivedAlbumPicture(QPixmap*);
+
+    void ReceivedHotChannels(ChannelList*);
+    void ReceivedFastChannels(ChannelList*);
 private slots:
     void OnReceivedNewList();
     void OnReceivedAlbumPicture();
     void OnReceivedChannelId();
 private:
     QNetworkReply* Get(const QString& url);
+    ChannelList* ParseChannelList(const QString& str);
 
 private:
     QNetworkAccessManager* network_manage_;

@@ -16,10 +16,20 @@
   <widget class="PlayScene" name="work_scene" native="true">
    <property name="geometry">
     <rect>
-     <x>10</x>
+     <x>16</x>
      <y>20</y>
      <width>400</width>
      <height>160</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="ChannelScene" name="channel_scene" native="true">
+   <property name="geometry">
+    <rect>
+     <x>-384</x>
+     <y>0</y>
+     <width>400</width>
+     <height>190</height>
     </rect>
    </property>
   </widget>
@@ -29,6 +39,12 @@
    <class>PlayScene</class>
    <extends>QWidget</extends>
    <header>Scene/playscene.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>ChannelScene</class>
+   <extends>QWidget</extends>
+   <header location="global">Scene/channelscene.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

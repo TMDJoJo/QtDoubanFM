@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>ChannelScene</class>
+ <widget class="QWidget" name="ChannelScene">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>400</width>
+    <height>190</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <widget class="QPushButton" name="sidebar_btn">
+   <property name="geometry">
+    <rect>
+     <x>384</x>
+     <y>50</y>
+     <width>16</width>
+     <height>85</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QTabWidget" name="channel_directory">
+   <property name="geometry">
+    <rect>
+     <x>2</x>
+     <y>2</y>
+     <width>398</width>
+     <height>186</height>
+    </rect>
+   </property>
+   <property name="minimumSize">
+    <size>
+     <width>398</width>
+     <height>186</height>
+    </size>
+   </property>
+   <property name="maximumSize">
+    <size>
+     <width>398</width>
+     <height>186</height>
+    </size>
+   </property>
+   <property name="tabPosition">
+    <enum>QTabWidget::West</enum>
+   </property>
+   <property name="currentIndex">
+    <number>1</number>
+   </property>
+   <widget class="QWidget" name="hot_channel">
+    <attribute name="title">
+     <string>热门兆赫</string>
+    </attribute>
+   </widget>
+   <widget class="QWidget" name="fast_channel">
+    <attribute name="title">
+     <string>上升最快</string>
+    </attribute>
+   </widget>
+  </widget>
+  <zorder>channel_directory</zorder>
+  <zorder>sidebar_btn</zorder>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

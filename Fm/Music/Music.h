@@ -17,6 +17,9 @@ public:
     qint64 PlayTime();
     bool Next();
     void SetVolume(quint8);
+
+    void Pause();
+    void Play();
 signals:
     void EmptyList();
     void PlayTimeTick(qint64);

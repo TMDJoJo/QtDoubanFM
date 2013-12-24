@@ -22,3 +22,22 @@ QToolButton#main_close_btn:pressed
 {
     border-image:url(:/Img/Resource/Img/close_pressed.png) 0 0 0 0 stretch stretch;
 }
+
+QToolButton#main_pause_btn
+{
+    width: 20px;
+    height: 20px;
+    border-image:url(:/Img/Resource/Img/pause_normal.png) 0 0 0 0 stretch stretch;
+}
+
+QToolButton#main_pause_btn:hover
+{
+    border-image:url(:/Img/Resource/Img/pause_hover.png) 0 0 0 0 stretch stretch;
+}
+
+QPushButton#main_play_btn
+{
+    border:0px;
+    background-color:rgba(255,255,255,200);
+}
+

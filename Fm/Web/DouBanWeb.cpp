@@ -147,40 +147,65 @@ void DouBanWeb::OnReceivedAlbumPicture(){
         emit ReceivedAlbumPicture(picture);
     }
 }
-#include <QFile>
+
 void DouBanWeb::OnReceivedChannelId(){
     QNetworkReply* reply = dynamic_cast<QNetworkReply*>(sender());
     ////接收到新播放列表
     Q_ASSERT(reply);
     if(reply->error() == QNetworkReply::NoError){
+        QString douban_fm_html = QString::fromUtf8(reply->readAll());
 
-        QString douban_fm_html = reply->readAll();
-//        QFile file("./aaa.txt");
-//        file.open(QIODevice::ReadWrite);
-//        file.write(douban_fm_html.toStdString().c_str());
-//        file.close();
-//        douban_fm_html
-
-        QRegExp reg(".*window.hot_channels_json = \\[(.*)\\];\n.*window.fast_channels_json = \\[(.*)\\];\n.*window.com_channels_json =.*");
+        QRegExp reg(".*window.hot_channels_json = (\\[.*\\]);\n.*window.fast_channels_json = (\\[.*\\]);\n.*window.com_channels_json =.*");
+        QString hot_channels = "";
+        QString fast_channels = "";
         if(reg.exactMatch(douban_fm_html)){
-            qDebug()<<reg.cap(1);
-            qDebug()<<reg.cap(2);
-//            qDebug()<<reg.cap(3);
+            hot_channels = reg.cap(1);
+            fast_channels = reg.cap(2);
         }
-
-//        QStringList labelList = douban_fm_html.split('\n');
-//        qDebug()<<labelList.size();
-//        QStringList::Iterator it = labelList.begin();
-//        while(it != labelList.end()){
-//            QRegExp reg(".*window.hot_channels_json = \\[(.+)\\];");
-
-//            if(reg.exactMatch(*it)){
-//                qDebug()<<reg.cap(1);
-//                //qDebug()<<*it;
-//            }
-
-//            ++it;
-//        }
+        ChannelList* hot_channel_list = ParseChannelList(hot_channels);
+        if(NULL != hot_channel_list){
+            emit ReceivedHotChannels(hot_channel_list);
+        }
+        ChannelList* fast_channel_list = ParseChannelList(fast_channels);
+        if(NULL != fast_channel_list){
+            emit ReceivedFastChannels(hot_channel_list);
+        }
     }
+    reply->deleteLater();
+}
 
+ChannelList* DouBanWeb::ParseChannelList(const QString& reply_string){
+    if(reply_string.isEmpty())
+        return NULL;
+    ////处理jsons
+    Json::Reader* reader = new Json::Reader;
+    Q_ASSERT(reader);
+    Json::Value* root = new Json::Value;
+    Q_ASSERT(root);
+    if(reader->parse(reply_string.toUtf8().data(),*root)){
+
+        int channel_size = (*root).size();
+        ChannelList* channel_list = new ChannelList();
+        Q_ASSERT(channel_list);
+        for(int index = 0;index < channel_size;++index){
+            DouBanChannel* new_channel = new DouBanChannel;
+            Q_ASSERT(new_channel);
+            new_channel->intro_ = (*root)[index]["intro"].asString().c_str();
+            new_channel->name_ = (*root)[index]["name"].asString().c_str();
+            new_channel->banner_ = (*root)[index]["banner"].asString().c_str();
+            new_channel->cover_ = (*root)[index]["cover"].asString().c_str();
+            new_channel->id_ = (*root)[index]["id"].asUInt();
+            new_channel->song_num_ = (*root)[index]["song_num"].asUInt();
+            ////TODO: hot songs and creator
+//            qDebug()<<new_channel->intro_<<new_channel->name_<<new_channel->id_<<new_channel->song_num_;
+            channel_list->push_back(new_channel);
+        }
+        return channel_list;
+
+    }
+    else{
+        SAFE_DELETE(reader);
+        SAFE_DELETE(root);
+        return NULL;
+    }
 }

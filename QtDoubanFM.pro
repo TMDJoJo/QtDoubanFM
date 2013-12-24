@@ -14,7 +14,9 @@ SOURCES += \
     Fm/Web/DouBanWeb.cpp \
     Fm/ActionDispatch.cpp \
     Fm/Music/Music.cpp \
-    Scene/PlayTimeSlider.cpp
+    Scene/PlayTimeSlider.cpp \
+    Scene/ChannelScene.cpp \
+    Scene/Channel.cpp
 
 HEADERS += \
     MainWindow.h \
@@ -25,17 +27,26 @@ HEADERS += \
     Fm/ActionDispatch.h \
     Fm/Type/DouBanSong.h \
     Fm/Music/Music.h \
-    Scene/PlayTimeSlider.h
+    Scene/PlayTimeSlider.h \
+    Fm/Type/DouBanChannel.h \
+    Scene/ChannelScene.h \
+    Scene/Channel.h
 
 FORMS += \
     MainWindow.ui \
-    Scene/PlayScene.ui
+    Scene/PlayScene.ui \
+    Scene/ChannelScene.ui \
+    Scene/Channel.ui
 
 OTHER_FILES += \
     Resource/Qss/MainWindow.css \
-    Resource/Qss/PlayScene.css
+    Resource/Qss/PlayScene.css \
+    Resource/Qss/ChannelScene.css
 
 RESOURCES += \
     Resource.qrc
 
 RC_FILE = QtDoubanFm.rc
+
+INCLUDEPATH += \
+    Include

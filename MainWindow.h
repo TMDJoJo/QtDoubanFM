@@ -5,6 +5,7 @@
 #include <QMouseEvent>
 #include <QPoint>
 #include <QToolButton>
+#include <QPushButton>
 
 namespace Ui {
 class MainWindow;
@@ -25,6 +26,9 @@ protected:
 
     void paintEvent(QPaintEvent* event);
 
+private slots:
+    void OnPause();
+    void OnPlay();
 private:
     void InitUi();
 private:
@@ -34,6 +38,8 @@ private:
     QPoint	    move_position_;     ////移动的距离
 
     QToolButton* close_button_;     ////关闭按钮
+    QToolButton* pause_button_;     ////暂停按钮
+    QPushButton* play_button_;      ////播放按钮
 };
 
 #endif // MAINWINDOW_H

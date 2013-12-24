@@ -1,0 +1,71 @@
+/*
+*频道选择界面CSS
+*/
+
+
+ChannelScene#channel_scene
+{
+        border:0px;
+        background-color:rgba(239,245,242,100);
+}
+
+QPushButton#sidebar_btn
+{
+        border:0px;
+        border-image:url(:/Img/Resource/Img/sidebar_icon_normal.png) 0 0 0 0 stretch stretch;
+}
+
+QPushButton#sidebar_btn:hover
+{
+        border-image:url(:/Img/Resource/Img/sidebar_icon_hover.png) 0 0 0 0 stretch stretch;
+}
+
+QPushButton#sidebar_btn_180
+{
+        border:0px;
+        border-image:url(:/Img/Resource/Img/sidebar_icon_normal_180.png) 0 0 0 0 stretch stretch;
+}
+
+QPushButton#sidebar_btn_180:hover
+{
+        border-image:url(:/Img/Resource/Img/sidebar_icon_hover_180.png) 0 0 0 0 stretch stretch;
+}
+
+/*
+*
+*/
+
+QTabWidget:pane
+{
+        border:0px;
+        top:0px;
+        border-image:none;
+        background:rgba(255,255,255,200);
+}
+
+QTabBar:tab
+{
+        border:21px;
+        background:#EFF5F2;
+        color:#000000;
+        padding:10px;
+}
+
+QTabBar:tab:selected
+{
+        /*background:rgba(223,232,229,200);*/
+        background:rgba(255,255,255,200);
+}
+
+QTabBar:tab:!selected
+{
+        /*background:rgba(157,214,197,150);*/
+        background:rgba(239,245,242,100);
+}
+
+QTabBar:tab:hover
+{
+        /*background:rgba(255,255,255,200);*/
+        background:rgba(157,214,197,150);
+}
+

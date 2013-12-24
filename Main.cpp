@@ -14,7 +14,7 @@ int main(int argc, char *argv[])
     //QTextCodec::setCodecForTr(QTextCodec::codecForName("GBK"));
     QTextCodec::setCodecForLocale(QTextCodec::codecForName("utf-8"));
     QTextCodec::setCodecForCStrings(QTextCodec::codecForName("utf-8"));
-    QTextCodec::setCodecForTr(QTextCodec::codecForName("utf-8"));
+    QTextCodec::setCodecForTr(QTextCodec::codecForName("GBK"));
 
     ////客户端与web通信
     g_douban_web = new DouBanWeb(qApp);
