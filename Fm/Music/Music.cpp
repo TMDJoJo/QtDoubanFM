@@ -43,8 +43,13 @@ void Music::OnStateChanged(Phonon::State new_state, Phonon::State old_state){
     //Phonon::PausedState           4
     //Phonon::ErrorState            5
     qDebug()<<"state change "<<old_state<<new_state;
+    if(old_state == Phonon::StoppedState
+            &&new_state == Phonon::PausedState){
+        media_object_->play();
+    }
 }
-
+//http://zonyitoo.github.io/blog/2013/01/22/doubanfmbo-fang-qi-kai-fa-shou-ji/
+//https://github.com/ginuerzh/qDoubanFM
 void Music::OnAboutToFinish(){
     if(song_list_->isEmpty()){
         //// end of a list

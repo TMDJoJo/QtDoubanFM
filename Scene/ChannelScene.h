@@ -20,6 +20,7 @@ public:
     void AddHotChannel(const DouBanChannel*);
     void AddFastChannel(const DouBanChannel*);
 
+    inline quint32 current_channel_id(){ return current_channel_id_; }
 protected:
     void paintEvent(QPaintEvent* event);
 private slots:

@@ -61,7 +61,7 @@ void ActionDispatch::Next(){
     QString play_time = QString("%1").arg(float(g_music->PlayTime()/100)/10);
     QString type = GET_SONG_NEXT;
     QString arg = QString("type=%1&sid=%2&pt=%3&channel=%4&pb=%5&from=%6").arg(
-                type,song_id,play_time,QString::number(1),QString::number(64),"mainsite");
+                type,song_id,play_time,QString::number(channel_scene_->current_channel_id()),QString::number(64),"mainsite");
     g_douban_web->GetNewList(arg);
     is_next_ = true;
 }
@@ -79,7 +79,7 @@ void ActionDispatch::Like(bool like){
         type = GET_SONG_UNLIKE;
     }
     QString arg = QString("type=%1&sid=%2&pt=%3&channel=%4&pb=%5&from=%6").arg(
-                type,song_id,play_time,QString::number(6),QString::number(64),"mainsite");
+                type,song_id,play_time,QString::number(channel_scene_->current_channel_id()),QString::number(64),"mainsite");
     g_douban_web->LikeSong(arg);
 }
 
@@ -90,7 +90,7 @@ void ActionDispatch::Trash(){
     QString play_time = QString("%1").arg(float(g_music->PlayTime()/100)/10);
     QString type = GET_SONG_TRASH;
     QString arg = QString("type=%1&sid=%2&pt=%3&channel=%4&pb=%5&from=%6").arg(
-                type,song_id,play_time,QString::number(6),QString::number(64),"mainsite");
+                type,song_id,play_time,QString::number(channel_scene_->current_channel_id()),QString::number(64),"mainsite");
     g_douban_web->TrashSong(arg);
     is_next_ = true;
 }
@@ -148,7 +148,7 @@ void ActionDispatch::OnEmptyList(){
     QString type = GET_SONG_ENDLIST;
 
     QString arg = QString("type=%1&sid=%2&pt=%3&channel=%4&pb=%5&from=%6").arg(
-                type,song_id,play_time,QString::number(6),QString::number(64),"mainsite");
+                type,song_id,play_time,QString::number(channel_scene_->current_channel_id()),QString::number(64),"mainsite");
     ////当前列表播放接受后继续获得下一列表
     g_douban_web->GetNewList(arg);
     is_next_ = true;

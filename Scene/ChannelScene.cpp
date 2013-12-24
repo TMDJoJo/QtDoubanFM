@@ -120,6 +120,10 @@ void ChannelScene::AddFastChannel(const DouBanChannel* channel){
     Q_ASSERT(new_channel);
     new_channel->set_channel_name(channel->name_);
     new_channel->set_song_num(channel->song_num_);
+    new_channel->set_channel_id(channel->id_);
+
+    connect(new_channel,SIGNAL(clicked(quint32)),
+            this,SLOT(OnChannelClicked(quint32)));
 
     QGridLayout* layout = dynamic_cast<QGridLayout*>(ui->fast_channel->layout());
 
