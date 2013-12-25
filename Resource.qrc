@@ -4,6 +4,7 @@
         <file>Resource/Qss/PlayScene.css</file>
         <file>Resource/Qss/ChannelScene.css</file>
         <file>Resource/Qss/Channel.css</file>
+        <file>Resource/Qss/AlbumScene.css</file>
     </qresource>
     <qresource prefix="/Img">
         <file>Resource/Img/background.png</file>

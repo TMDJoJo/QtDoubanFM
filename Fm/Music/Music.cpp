@@ -64,11 +64,6 @@ void Music::OnStateChanged(Phonon::State new_state, Phonon::State old_state){
     //Phonon::ErrorState            5
     qDebug()<<"state change "<<old_state<<new_state;
 
-    if(old_state == Phonon::StoppedState
-            &&new_state == Phonon::PausedState){
-        media_object_->play();
-        return;
-    }
     if(new_state == Phonon::ErrorState){
         Next();
         return;
@@ -131,10 +126,10 @@ bool Music::Next(){
         return false;
     }
 
-    current_song_ = song_list_->front();
-    song_list_->pop_front();
+//    current_song_ = song_list_->front();
+//    song_list_->pop_front();
 
-    media_object_->setCurrentSource(QUrl(current_song_->url_));
+    media_object_->setCurrentSource(QUrl(song_list_->front()->url_));
     media_object_->play();
     return true;
 }

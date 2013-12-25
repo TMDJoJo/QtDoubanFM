@@ -31,6 +31,8 @@ public:
     void Play();
 
     void ChangeChannel(quint32 from_channel_id,quint32 to_channel_id);
+
+    void ShowAlbumInfo();
 private slots:
     void OnReceivedNewList(SongList*);
     void OnReceivedAlbumPicture(QPixmap*);

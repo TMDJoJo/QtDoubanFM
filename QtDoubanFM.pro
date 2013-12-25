@@ -16,7 +16,8 @@ SOURCES += \
     Scene/PlayTimeSlider.cpp \
     Scene/ChannelScene.cpp \
     Scene/Channel.cpp \
-    Scene/ChannelScrollArea.cpp
+    Scene/ChannelScrollArea.cpp \
+    Scene/AlbumScene.cpp
 
 HEADERS += \
     MainWindow.h \
@@ -30,19 +31,22 @@ HEADERS += \
     Fm/Type/DouBanChannel.h \
     Scene/ChannelScene.h \
     Scene/Channel.h \
-    Scene/ChannelScrollArea.h
+    Scene/ChannelScrollArea.h \
+    Scene/AlbumScene.h
 
 FORMS += \
     MainWindow.ui \
     Scene/PlayScene.ui \
     Scene/ChannelScene.ui \
-    Scene/Channel.ui
+    Scene/Channel.ui \
+    Scene/AlbumScene.ui
 
 OTHER_FILES += \
     Resource/Qss/MainWindow.css \
     Resource/Qss/PlayScene.css \
     Resource/Qss/ChannelScene.css \
-    Resource/Qss/Channel.css
+    Resource/Qss/Channel.css \
+    Resource/Qss/AlbumScene.css
 
 RESOURCES += \
     Resource.qrc

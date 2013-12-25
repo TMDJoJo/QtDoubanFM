@@ -13,7 +13,7 @@
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <widget class="QWidget" name="album_image" native="true">
+  <widget class="AlbumScene" name="album_image" native="true">
    <property name="geometry">
     <rect>
      <x>0</x>
@@ -222,6 +222,12 @@
    <class>PlayTimeSlider</class>
    <extends>QSlider</extends>
    <header>playtimeslider.h</header>
+  </customwidget>
+  <customwidget>
+   <class>AlbumScene</class>
+   <extends>QWidget</extends>
+   <header location="global">Scene/albumscene.h</header>
+   <container>1</container>
   </customwidget>
  </customwidgets>
  <resources/>

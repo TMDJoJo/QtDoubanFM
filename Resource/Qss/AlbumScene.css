@@ -1,0 +1,14 @@
+/*
+*×¨¼­Ð¡¿òCSS
+*/
+
+QWidget#album_shadow
+{
+        background:rgba(229,230,230,150);
+}
+
+QLabel#lbe_tip
+{
+        color:#FFFFFF;
+        background:rgba(50,50,50,150);
+}

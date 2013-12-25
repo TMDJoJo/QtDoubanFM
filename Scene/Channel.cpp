@@ -19,11 +19,11 @@ Channel::Channel(DouBanChannel* channel,QWidget *parent /*= 0*/) :
 
     QString tool_tip;
     if(!channel_->intro_.isEmpty()){
-        tool_tip += tr("<b>ºÚΩÈ£∫</b><font color=#888888>") + channel_->intro_ + "</font><br>";
+        tool_tip += tr("<b>ºÚΩÈ£∫</b><font color=#888888>") + channel_->intro_ + "</font>";
     }
     if(channel_->hot_songs_.size() > 0){
         if(!tool_tip.isEmpty()){
-            tool_tip += "<hr>";
+            tool_tip += "<br>";
         }
         tool_tip += tr("<b>»»√≈∏Ë«˙£∫</b><font color=#888888>") + channel_->hot_songs_.join("/") + "</font>";
     }

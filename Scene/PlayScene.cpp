@@ -16,7 +16,6 @@ PlayScene::PlayScene(QWidget *parent) :
     InitUi();
 
     g_action_dispatch->set_play_scene(this);
-
 }
 
 PlayScene::~PlayScene()
@@ -42,6 +41,8 @@ void PlayScene::InitUi(){
     connect(ui->tbtn_trash,SIGNAL(clicked()),this,SLOT(OnTrashButtonClicked()));
     connect(ui->tbtn_next,SIGNAL(clicked()),this,SLOT(OnNextButtonClicked()));
     connect(ui->volume,SIGNAL(valueChanged(int)),this,SLOT(OnValueChanged (int)));
+    connect(ui->album_image,SIGNAL(clicked()),this,SLOT(OnAlbumClicked()));
+
 }
 
 void PlayScene::set_play_time(qint64 play_time,qint64 remaining_time){
@@ -130,4 +131,8 @@ void PlayScene::OnTrashButtonClicked(){
 
 void PlayScene::OnValueChanged(int value){
     g_action_dispatch->SetVolume(value);
+}
+
+void PlayScene::OnAlbumClicked(){
+    g_action_dispatch->ShowAlbumInfo();
 }

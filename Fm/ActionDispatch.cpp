@@ -1,5 +1,7 @@
 #include "ActionDispatch.h"
 
+#include <QDesktopServices>
+
 #include "./Web/DouBanWeb.h"
 #include "./Music/Music.h"
 
@@ -35,7 +37,7 @@ ActionDispatch::ActionDispatch(QObject *parent) :
     connect(g_music,SIGNAL(SongAboutFinish()),
             this,SLOT(OnSongAboutFinish()));
 
-    //ChangeChannel(0,0);
+    ChangeChannel(0,0);
     GetChannelId();
 }
 
@@ -152,6 +154,13 @@ void ActionDispatch::ChangeChannel(quint32 /*from_channel_id*/,quint32 to_channe
                 "mainsite");
     g_douban_web->GetNewList(arg);
     is_next_ = true;
+}
+
+void ActionDispatch::ShowAlbumInfo(){
+    if(g_music->current_song() == NULL)
+        return;
+    QString url = "http://music.douban.com" + g_music->current_song()->album_;
+    QDesktopServices::openUrl(QUrl(url));
 }
 
 void ActionDispatch::OnReceivedAlbumPicture(QPixmap* picture){

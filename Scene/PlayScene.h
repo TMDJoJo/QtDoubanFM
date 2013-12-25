@@ -31,6 +31,7 @@ private slots:
     void OnNextButtonClicked();
     void OnTrashButtonClicked();
     void OnValueChanged(int value);
+    void OnAlbumClicked();
 private:
     void InitUi();
 private:
