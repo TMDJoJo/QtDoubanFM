@@ -95,4 +95,31 @@ QLabel#lbe_song_name
         color:rgb(51,173,133);
 }
 
+/*
+*“Ù¡øÃı
+*/
+QSlider#volume::groove:horizontal
+{
+        border:1px solid rgb(229,229,232);
+        background:rgb(229,229,232);
+        height:1px;
+        margin:0px;
+        left:1px;
+        right:1px;
+}
 
+QSlider#volume::handle:horizontal
+{
+        border:0px solid rgb(51,51,51);
+        /*
+        width:0px;
+        margin:1px 1px 1px 1px;
+        */
+}
+QSlider#volume::sub-page:horizontal
+{
+        background:rgb(51,51,51);
+        /*
+        background:qlineargradient(spread:pad, x1:0, y1:1, x2:0, y2:0, stop:0 rgba(27, 5, 27, 255), stop:0.25 rgba(99, 20, 102, 255), stop:0.5 rgba(154, 30, 158, 255), stop:1 rgba(173, 57, 176, 255))
+        */
+}

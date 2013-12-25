@@ -8,14 +8,12 @@ MainWindow#main_window
 
 QToolButton#main_close_btn
 {
-    width: 20px;
-    height: 20px;
     border-image:url(:/Img/Resource/Img/close.png) 0 0 0 0 stretch stretch;
 }
 
 QToolButton#main_close_btn:hover
 {
-    border-image:url(:/Img/Resource/Img/close_hover.png) 0 0 0 0 stretch stretch;
+    border-image:url(:/Img/Resource/Img/close_pressed.png) 0 0 0 0 stretch stretch;
 }
 
 QToolButton#main_close_btn:pressed
@@ -23,10 +21,11 @@ QToolButton#main_close_btn:pressed
     border-image:url(:/Img/Resource/Img/close_pressed.png) 0 0 0 0 stretch stretch;
 }
 
+/*
+*
+*/
 QToolButton#main_pause_btn
 {
-    width: 20px;
-    height: 20px;
     border-image:url(:/Img/Resource/Img/pause_normal.png) 0 0 0 0 stretch stretch;
 }
 

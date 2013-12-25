@@ -29,10 +29,30 @@ Music::Music(QObject *parent) :
     connect(media_object_, SIGNAL(stateChanged(Phonon::State, Phonon::State)),
             this, SLOT(OnStateChanged(Phonon::State, Phonon::State)));
     connect(media_object_, SIGNAL(aboutToFinish()), this, SLOT(OnAboutToFinish()));
+    connect(media_object_, SIGNAL(currentSourceChanged(const Phonon::MediaSource&)),
+            this,SLOT(OnCurrentSourceChanged(const Phonon::MediaSource&)));
+}
+
+Music::~Music(){
+    if(NULL != media_object_){
+        media_object_->stop();
+    }
+    SAFE_DELETE(audio_output_);
+    SAFE_DELETE(media_object_);
+
+    if(NULL != song_list_){
+        while(!song_list_->isEmpty()){
+            SAFE_DELETE(song_list_->front());
+            song_list_->pop_front();
+        }
+    }
+
+    SAFE_DELETE(song_list_);
+    SAFE_DELETE(current_song_);
 }
 
 void Music::OnTick(qint64 play_time){
-    emit PlayTimeTick(play_time);
+    emit PlayTimeTick(play_time,RemainingTime());
 }
 
 void Music::OnStateChanged(Phonon::State new_state, Phonon::State old_state){
@@ -43,31 +63,48 @@ void Music::OnStateChanged(Phonon::State new_state, Phonon::State old_state){
     //Phonon::PausedState           4
     //Phonon::ErrorState            5
     qDebug()<<"state change "<<old_state<<new_state;
+
     if(old_state == Phonon::StoppedState
             &&new_state == Phonon::PausedState){
         media_object_->play();
+        return;
     }
+    if(new_state == Phonon::ErrorState){
+        Next();
+        return;
+    }
+
 }
 //http://zonyitoo.github.io/blog/2013/01/22/doubanfmbo-fang-qi-kai-fa-shou-ji/
 //https://github.com/ginuerzh/qDoubanFM
 void Music::OnAboutToFinish(){
+    if(NULL != current_song_)
+        emit SongAboutFinish();
     if(song_list_->isEmpty()){
         //// end of a list
-        emit EmptyList();
+        emit ListEmpty();
     }
     else{
-        Next();
+
+        media_object_->enqueue(QUrl(song_list_->front()->url_));
     }
+}
+
+void Music::OnCurrentSourceChanged(const Phonon::MediaSource&){
+    ////开始播放下一曲
+    SAFE_DELETE(current_song_);
+    current_song_ = song_list_->front();
+    song_list_->pop_front();
+    emit PlaySong(current_song_);
 }
 
 bool Music::set_song_list(SongList* song_list){
     if(NULL == song_list)
         return false;
     if(song_list_ != NULL){
-        SongList::iterator it = song_list_->begin();
-        while(it != song_list_->end()){
-            SAFE_DELETE(*it);
-            ++it;
+        while(!song_list_->isEmpty()){
+            SAFE_DELETE(song_list_->front());
+            song_list_->pop_front();
         }
         SAFE_DELETE(song_list_);
     }
@@ -76,23 +113,26 @@ bool Music::set_song_list(SongList* song_list){
 }
 
 qint64 Music::PlayTime(){
-
+    if(NULL == media_object_)
+        return 0;
     return media_object_->currentTime();
+}
+
+qint64 Music::RemainingTime(){
+    if(NULL == media_object_)
+        return 0;
+    return media_object_->remainingTime();
 }
 
 bool Music::Next(){
     if(NULL == song_list_
         || song_list_->isEmpty()){
-        emit EmptyList();
+        emit ListEmpty();
         return false;
     }
 
-    if(media_object_->state() == Phonon::PlayingState)
-        media_object_->stop();
-    SAFE_DELETE(current_song_);
     current_song_ = song_list_->front();
     song_list_->pop_front();
-    emit PlaySong(current_song_);
 
     media_object_->setCurrentSource(QUrl(current_song_->url_));
     media_object_->play();

@@ -17,8 +17,8 @@ class ChannelScene : public QWidget
 public:
     explicit ChannelScene(QWidget *parent = 0);
     ~ChannelScene();
-    void AddHotChannel(const DouBanChannel*);
-    void AddFastChannel(const DouBanChannel*);
+    void AddHotChannel(DouBanChannel*);
+    void AddFastChannel(DouBanChannel*);
 
     inline quint32 current_channel_id(){ return current_channel_id_; }
 protected:

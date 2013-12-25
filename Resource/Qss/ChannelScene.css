@@ -69,3 +69,27 @@ QTabBar:tab:hover
         background:rgba(157,214,197,150);
 }
 
+/*
+*
+*/
+
+QWidget#hot_channel
+{
+}
+
+QWidget#fast_channel
+{
+}
+
+ChannelScrollArea#hot_channel_scroll_area,ChannelScrollArea#fast_channel_scroll_area
+{
+        border:0px;
+        background:rgba(255,255,255,100);
+}
+
+QWidget#scroll_area_widget_contents
+{
+        border:0px;
+        background:rgba(255,255,255,0);
+}
+

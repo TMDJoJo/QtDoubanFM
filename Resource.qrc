@@ -3,6 +3,7 @@
         <file>Resource/Qss/MainWindow.css</file>
         <file>Resource/Qss/PlayScene.css</file>
         <file>Resource/Qss/ChannelScene.css</file>
+        <file>Resource/Qss/Channel.css</file>
     </qresource>
     <qresource prefix="/Img">
         <file>Resource/Img/background.png</file>

@@ -4,7 +4,6 @@ SOURCES += \
     Main.cpp \
     MainWindow.cpp \
     Scene/PlayScene.cpp \
-    Net/Web.cpp \
     Jsoncpp/json_writer.cpp \
     Jsoncpp/json_valueiterator.inl \
     Jsoncpp/json_value.cpp \
@@ -16,12 +15,12 @@ SOURCES += \
     Fm/Music/Music.cpp \
     Scene/PlayTimeSlider.cpp \
     Scene/ChannelScene.cpp \
-    Scene/Channel.cpp
+    Scene/Channel.cpp \
+    Scene/ChannelScrollArea.cpp
 
 HEADERS += \
     MainWindow.h \
     Scene/PlayScene.h \
-    Net/Web.h \
     Fm/Common.h \
     Fm/Web/DouBanWeb.h \
     Fm/ActionDispatch.h \
@@ -30,7 +29,8 @@ HEADERS += \
     Scene/PlayTimeSlider.h \
     Fm/Type/DouBanChannel.h \
     Scene/ChannelScene.h \
-    Scene/Channel.h
+    Scene/Channel.h \
+    Scene/ChannelScrollArea.h
 
 FORMS += \
     MainWindow.ui \
@@ -41,7 +41,8 @@ FORMS += \
 OTHER_FILES += \
     Resource/Qss/MainWindow.css \
     Resource/Qss/PlayScene.css \
-    Resource/Qss/ChannelScene.css
+    Resource/Qss/ChannelScene.css \
+    Resource/Qss/Channel.css
 
 RESOURCES += \
     Resource.qrc

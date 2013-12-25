@@ -31,19 +31,19 @@
     <rect>
      <x>2</x>
      <y>2</y>
-     <width>398</width>
+     <width>382</width>
      <height>186</height>
     </rect>
    </property>
    <property name="minimumSize">
     <size>
-     <width>398</width>
+     <width>382</width>
      <height>186</height>
     </size>
    </property>
    <property name="maximumSize">
     <size>
-     <width>398</width>
+     <width>382</width>
      <height>186</height>
     </size>
    </property>
@@ -57,16 +57,56 @@
     <attribute name="title">
      <string>热门兆赫</string>
     </attribute>
+    <widget class="ChannelScrollArea" name="hot_channel_scroll_area" native="true">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>0</y>
+       <width>357</width>
+       <height>186</height>
+      </rect>
+     </property>
+    </widget>
    </widget>
    <widget class="QWidget" name="fast_channel">
     <attribute name="title">
      <string>上升最快</string>
     </attribute>
+    <widget class="ChannelScrollArea" name="fast_channel_scroll_area" native="true">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>0</y>
+       <width>357</width>
+       <height>186</height>
+      </rect>
+     </property>
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>0</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>16777215</width>
+       <height>16777215</height>
+      </size>
+     </property>
+    </widget>
    </widget>
   </widget>
   <zorder>channel_directory</zorder>
   <zorder>sidebar_btn</zorder>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>ChannelScrollArea</class>
+   <extends>QWidget</extends>
+   <header location="global">Scene/channelscrollarea.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

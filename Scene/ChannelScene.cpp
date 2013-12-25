@@ -17,16 +17,6 @@ ChannelScene::ChannelScene(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    QGridLayout* hot_layout = new QGridLayout;
-    hot_layout->setVerticalSpacing(45);
-    hot_layout->setHorizontalSpacing(5);
-    ui->hot_channel->setLayout(hot_layout);
-
-    QGridLayout* fast_layout = new QGridLayout;
-    fast_layout->setVerticalSpacing(45);
-    fast_layout->setHorizontalSpacing(5);
-    ui->fast_channel->setLayout(fast_layout);
-
     //this->setAutoFillBackground(true);
     ui->sidebar_btn->setObjectName("sidebar_btn_180");
     ui->sidebar_btn->setFocusPolicy(Qt::NoFocus);
@@ -44,6 +34,19 @@ ChannelScene::ChannelScene(QWidget *parent) :
 
 ChannelScene::~ChannelScene()
 {
+    while(!hot_channel_list_->isEmpty()){
+        DouBanChannel* channel = hot_channel_list_->front();
+        hot_channel_list_->pop_front();
+        SAFE_DELETE(channel);
+    }
+    while(!fast_channel_list_->isEmpty()){
+        DouBanChannel* channel = fast_channel_list_->front();
+        fast_channel_list_->pop_front();
+        SAFE_DELETE(channel);
+    }
+    SAFE_DELETE(hot_channel_list_);
+    SAFE_DELETE(fast_channel_list_);
+    SAFE_DELETE(siderbar_animation_);
     delete ui;
 }
 
@@ -96,40 +99,43 @@ void ChannelScene::OnChannelClicked(quint32 channel_id){
     g_action_dispatch->ChangeChannel(current_channel_id_,channel_id);
 }
 
-void ChannelScene::AddHotChannel(const DouBanChannel* channel){
+void ChannelScene::AddHotChannel(DouBanChannel* channel){
 
-    Channel* new_channel = new Channel();
+    if(NULL == channel)
+        return;
+    Channel* new_channel = new Channel(channel);
     Q_ASSERT(new_channel);
-    new_channel->set_channel_name(channel->name_);
-    new_channel->set_song_num(channel->song_num_);
-    new_channel->set_channel_id(channel->id_);
+//    new_channel->set_channel_name(channel->name_ + "MHz");
+//    new_channel->set_song_num(QString::number(channel->song_num_) + tr("Ê×¸èÇú"));
+//    new_channel->set_channel_id(channel->id_);
     connect(new_channel,SIGNAL(clicked(quint32)),
             this,SLOT(OnChannelClicked(quint32)));
-    QGridLayout* layout = dynamic_cast<QGridLayout*>(ui->hot_channel->layout());
 
-    if(layout->count()%2 == 0)
-        layout->addWidget(new_channel,layout->count()/2,0);
+    if(ui->hot_channel_scroll_area->item_count()%2 == 0)
+        ui->hot_channel_scroll_area->AddWidget(new_channel,ui->hot_channel_scroll_area->item_count()/2,0);
     else{
-        layout->addWidget(new_channel,layout->count()/2,1);
+        ui->hot_channel_scroll_area->AddWidget(new_channel,ui->hot_channel_scroll_area->item_count()/2,1);
     }
 
 }
 
-void ChannelScene::AddFastChannel(const DouBanChannel* channel){
-    Channel* new_channel = new Channel();
+void ChannelScene::AddFastChannel(DouBanChannel* channel){
+
+    if(NULL == channel)
+        return;
+
+    Channel* new_channel = new Channel(channel);
     Q_ASSERT(new_channel);
-    new_channel->set_channel_name(channel->name_);
-    new_channel->set_song_num(channel->song_num_);
-    new_channel->set_channel_id(channel->id_);
+//    new_channel->set_channel_name(channel->name_ + "MHz");
+//    new_channel->set_song_num(QString::number(channel->song_num_) + tr("Ê×¸èÇú"));
+//    new_channel->set_channel_id(channel->id_);
 
     connect(new_channel,SIGNAL(clicked(quint32)),
             this,SLOT(OnChannelClicked(quint32)));
 
-    QGridLayout* layout = dynamic_cast<QGridLayout*>(ui->fast_channel->layout());
-
-    if(layout->count()%2 == 0)
-        layout->addWidget(new_channel,layout->count()/2,0);
+    if(ui->fast_channel_scroll_area->item_count()%2 == 0)
+        ui->fast_channel_scroll_area->AddWidget(new_channel,ui->fast_channel_scroll_area->item_count()/2,0);
     else{
-        layout->addWidget(new_channel,layout->count()/2,1);
+        ui->fast_channel_scroll_area->AddWidget(new_channel,ui->fast_channel_scroll_area->item_count()/2,1);
     }
 }

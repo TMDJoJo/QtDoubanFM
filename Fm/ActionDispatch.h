@@ -36,8 +36,9 @@ private slots:
     void OnReceivedAlbumPicture(QPixmap*);
     ////Music²¥·ÅÄ£¿é²Ûº¯Êý
     void OnEmptyList();
-    void OnPlayTimeTick(qint64);
+    void OnPlayTimeTick(qint64 play_time,qint64 remaining_time);
     void OnPlaySong(DouBanSong*);
+    void OnSongAboutFinish();
     ////
     void OnReceivedHotChannels(ChannelList*);
     void OnReceivedFastChannels(ChannelList*);

@@ -48,14 +48,14 @@ void MainWindow::InitUi(){
     pause_button_ = new QToolButton(this);
     Q_ASSERT(pause_button_);
     pause_button_->setObjectName("main_pause_btn");
-    pause_button_->setGeometry(this->width()-40,0,20,20);
+    pause_button_->setGeometry(this->width()-45,0,25,25);
     pause_button_->setCursor(Qt::PointingHandCursor);
     connect(pause_button_, SIGNAL(clicked()),this, SLOT(OnPause()));
 
     play_button_ = new QPushButton(this);
     Q_ASSERT(play_button_);
     play_button_->setObjectName("main_play_btn");
-    play_button_->setGeometry(170,0,250,190);
+    play_button_->setGeometry(176,0,244,190);
     play_button_->setText(tr("¼ÌÐø²¥·Å >"));
     play_button_->setCursor(Qt::PointingHandCursor);
     play_button_->setFocusPolicy(Qt::NoFocus);

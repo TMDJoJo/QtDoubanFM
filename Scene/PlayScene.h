@@ -19,7 +19,7 @@ public:
     explicit PlayScene(QWidget *parent = 0);
     ~PlayScene();
 
-    void set_play_time(qint64 play_time);
+    void set_play_time(qint64 play_time,qint64 remaining_time);
     void SetSongInfo(DouBanSong*);
     void SetAlbumPicture(QPixmap*);
 

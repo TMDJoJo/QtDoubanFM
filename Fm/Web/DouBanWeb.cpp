@@ -168,7 +168,7 @@ void DouBanWeb::OnReceivedChannelId(){
         }
         ChannelList* fast_channel_list = ParseChannelList(fast_channels);
         if(NULL != fast_channel_list){
-            emit ReceivedFastChannels(hot_channel_list);
+            emit ReceivedFastChannels(fast_channel_list);
         }
     }
     reply->deleteLater();
@@ -196,9 +196,14 @@ ChannelList* DouBanWeb::ParseChannelList(const QString& reply_string){
             new_channel->cover_ = (*root)[index]["cover"].asString().c_str();
             new_channel->id_ = (*root)[index]["id"].asUInt();
             new_channel->song_num_ = (*root)[index]["song_num"].asUInt();
+            int hot_song_count = (*root)[index]["hot_songs"].size();
+            for(int index = 0;index < hot_song_count;++index){
+                new_channel->hot_songs_.push_back((*root)[index]["hot_songs"][index].asString().c_str());
+            }
             ////TODO: hot songs and creator
 //            qDebug()<<new_channel->intro_<<new_channel->name_<<new_channel->id_<<new_channel->song_num_;
             channel_list->push_back(new_channel);
+            new_channel = NULL;
         }
         return channel_list;
 

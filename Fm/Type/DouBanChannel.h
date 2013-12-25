@@ -2,6 +2,7 @@
 #define DOUBANCHANNEL_H
 #include <QString>
 #include <QList>
+#include <QStringList>
 
 //{
 //  "intro": "生于八零年代的我们，听着这些歌成长",
@@ -29,7 +30,7 @@ struct DouBanChannel_T{
     QString cover_;
     quint32 id_;
     quint32 song_num_;
-    QList<QString> hot_songs_;
+    QStringList hot_songs_;
     ////TODO: with out creator info
 };
 

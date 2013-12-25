@@ -44,10 +44,10 @@ void PlayScene::InitUi(){
     connect(ui->volume,SIGNAL(valueChanged(int)),this,SLOT(OnValueChanged (int)));
 }
 
-void PlayScene::set_play_time(qint64 play_time){
-    QString minutes = QString::number(play_time/60000);
-    QString secends = QString::number((play_time/1000)%60);
-    ui->lbe_time_remaining->setText(minutes + ":" + secends);
+void PlayScene::set_play_time(qint64 play_time,qint64 remaining_time){
+    QString minutes = QString::number(remaining_time/60000);
+    QString secends = QString::number((remaining_time/1000)%60);
+    ui->lbe_time_remaining->setText("-" + minutes + ":" + secends);
     ui->play_time->setSliderPosition(play_time/1000);
 }
 

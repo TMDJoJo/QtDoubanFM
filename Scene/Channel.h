@@ -4,6 +4,9 @@
 #include <QWidget>
 #include <QMouseEvent>
 
+#include "../Fm/Type/DouBanChannel.h"
+#include "../Fm/Common.h"
+
 namespace Ui {
 class Channel;
 }
@@ -13,19 +16,21 @@ class Channel : public QWidget
     Q_OBJECT
     
 public:
-    explicit Channel(QWidget *parent = 0);
+    explicit Channel(DouBanChannel* channel,QWidget *parent = 0);
     ~Channel();
-    void set_channel_name(const QString name);
-    void set_song_num(quint32 num);
-    inline void set_channel_id(quint32 id){ channel_id_ = id; }
+
+protected:
+    void paintEvent(QPaintEvent* event);
+
 signals:
     void clicked(quint32);
 protected:
-    virtual void mousePressEvent(QMouseEvent *event);
+    virtual void mousePressEvent(QMouseEvent*);
 private:
     Ui::Channel *ui;
+    DouBanChannel* channel_;
 
-    quint32 channel_id_;
+    bool is_pressed_;
 };
 
 #endif // CHANNEL_H
