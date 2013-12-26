@@ -17,7 +17,9 @@ SOURCES += \
     Scene/ChannelScene.cpp \
     Scene/Channel.cpp \
     Scene/ChannelScrollArea.cpp \
-    Scene/AlbumScene.cpp
+    Scene/AlbumScene.cpp \
+    Tray/TrayIconMenu.cpp \
+    Tray/Tray.cpp
 
 HEADERS += \
     MainWindow.h \
@@ -32,7 +34,9 @@ HEADERS += \
     Scene/ChannelScene.h \
     Scene/Channel.h \
     Scene/ChannelScrollArea.h \
-    Scene/AlbumScene.h
+    Scene/AlbumScene.h \
+    Tray/TrayIconMenu.h \
+    Tray/Tray.h
 
 FORMS += \
     MainWindow.ui \

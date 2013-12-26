@@ -23,7 +23,7 @@ Music::Music(QObject *parent) :
 //    volume_slider_->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
 //    volume_slider_->setAudioOutput(audio_output_);
 
-    Phonon::createPath(media_object_, audio_output_);
+    Phonon::createPath(media_object_,audio_output_);
 
     connect(media_object_, SIGNAL(tick(qint64)), this, SLOT(OnTick(qint64)));
     connect(media_object_, SIGNAL(stateChanged(Phonon::State, Phonon::State)),
@@ -62,7 +62,15 @@ void Music::OnStateChanged(Phonon::State new_state, Phonon::State old_state){
     //Phonon::BufferingState        3
     //Phonon::PausedState           4
     //Phonon::ErrorState            5
-    qDebug()<<"state change "<<old_state<<new_state;
+
+    if(new_state == Phonon::PlayingState){
+        emit StateChangePlaying();
+        return;
+    }
+    if(new_state == Phonon::PausedState){
+        emit StateChangePaused();
+        return;
+    }
 
     if(new_state == Phonon::ErrorState){
         Next();
@@ -125,12 +133,13 @@ bool Music::Next(){
         emit ListEmpty();
         return false;
     }
-
 //    current_song_ = song_list_->front();
 //    song_list_->pop_front();
 
     media_object_->setCurrentSource(QUrl(song_list_->front()->url_));
     media_object_->play();
+
+
     return true;
 }
 

@@ -23,17 +23,25 @@ ChannelScrollArea::ChannelScrollArea(QWidget *parent) :
     this->setWidgetResizable(true);
     this->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     this->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+
 }
 
 ChannelScrollArea::~ChannelScrollArea(){
+    ////手动析构与QT自身半自动析构同时使用注意事项
+    ////QT自动回收内存 不会讲起儿子的指针置空
+    ////以下执行顺序颠倒后执行析构是崩溃
+    SAFE_DELETE(grid_layout_);
     SAFE_DELETE(scroll_area_widget_contents);
 }
 
 void ChannelScrollArea::AddWidget(QWidget* widget,int row,int column,Qt::Alignment alignment /*= 0*/){
     if(NULL == widget)
         return;
-    ++item_count_;
-    widget->setParent(this);
-    grid_layout_->addWidget(widget,row,column,alignment);
+    //widget->setParent(this);
+    if(NULL != grid_layout_){
+        grid_layout_->addWidget(widget,row,column,alignment);
+        ++item_count_;
+    }
+
 }
 

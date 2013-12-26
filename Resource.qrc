@@ -24,5 +24,6 @@
         <file>Resource/Img/sidebar_icon_normal.png</file>
         <file>Resource/Img/sidebar_icon_hover_180.png</file>
         <file>Resource/Img/sidebar_icon_normal_180.png</file>
+        <file>Resource/Img/tray_icon.png</file>
     </qresource>
 </RCC>

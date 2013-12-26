@@ -28,6 +28,9 @@ signals:
     void PlayTimeTick(qint64 play_time,qint64 remaining_time);
     void PlaySong(DouBanSong* song);
     void SongAboutFinish();
+
+    void StateChangePlaying();
+    void StateChangePaused();
 private slots:
     void OnTick(qint64);
     void OnStateChanged(Phonon::State new_state, Phonon::State old_state);

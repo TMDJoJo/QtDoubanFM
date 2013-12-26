@@ -21,11 +21,11 @@ public:
 
 protected:
     void paintEvent(QPaintEvent* event);
-
+    virtual void mousePressEvent(QMouseEvent*);
+    virtual void mouseReleaseEvent(QMouseEvent*);
+    virtual void leaveEvent(QEvent*);
 signals:
     void clicked(quint32);
-protected:
-    virtual void mousePressEvent(QMouseEvent*);
 private:
     Ui::Channel *ui;
     DouBanChannel* channel_;

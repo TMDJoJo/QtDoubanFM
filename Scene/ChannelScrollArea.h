@@ -23,7 +23,6 @@ signals:
 public slots:
 private:
     QGridLayout* grid_layout_;
-
     QWidget* scroll_area_widget_contents;
 
     quint32 item_count_;

@@ -14,18 +14,18 @@ Channel::Channel(DouBanChannel* channel,QWidget *parent /*= 0*/) :
     this->setCursor(Qt::PointingHandCursor);
     this->setAutoFillBackground(false);
 
-    ui->channel_name->setText(channel_->name_ + "MHz");
+    ui->channel_name->setText(channel_->name_ + tr("MHz"));
     ui->song_num->setText(QString::number(channel_->song_num_) + tr(" ◊∏Ë«˙"));
 
     QString tool_tip;
     if(!channel_->intro_.isEmpty()){
-        tool_tip += tr("<b>ºÚΩÈ£∫</b><font color=#888888>") + channel_->intro_ + "</font>";
+        tool_tip += tr("<b>ºÚΩÈ£∫</b><font color=#888888>") + channel_->intro_ + tr("</font>");
     }
     if(channel_->hot_songs_.size() > 0){
         if(!tool_tip.isEmpty()){
-            tool_tip += "<br>";
+            tool_tip += tr("<br>");
         }
-        tool_tip += tr("<b>»»√≈∏Ë«˙£∫</b><font color=#888888>") + channel_->hot_songs_.join("/") + "</font>";
+        tool_tip += tr("<b>»»√≈∏Ë«˙£∫</b><font color=#888888>") + channel_->hot_songs_.join("/") + tr("</font>");
     }
     this->setToolTip(tool_tip);
 
@@ -40,8 +40,8 @@ Channel::Channel(DouBanChannel* channel,QWidget *parent /*= 0*/) :
 
 Channel::~Channel()
 {
-    delete ui;
     SAFE_DELETE(channel_);
+    delete ui;
 }
 
 void Channel::paintEvent(QPaintEvent*){
@@ -54,6 +54,30 @@ void Channel::paintEvent(QPaintEvent*){
 
 void Channel::mousePressEvent(QMouseEvent* event){
     if(event->button() == Qt::LeftButton){
-        emit clicked(channel_->id_);
+        is_pressed_ = true;
+        event->accept();
     }
+    else
+        return QWidget::mousePressEvent(event);
+}
+
+void Channel::mouseReleaseEvent(QMouseEvent* event){
+    if(event->button() == Qt::LeftButton
+            &&is_pressed_
+            &&event->pos().x() > 0
+            &&event->pos().x() < this->width()
+            &&event->pos().y() > 0
+            &&event->pos().y() < this->height()){
+        is_pressed_ = false;
+        emit clicked(channel_->id_);
+        event->accept();
+    }
+    else{
+        return QWidget::mouseReleaseEvent(event);
+    }
+}
+
+void Channel::leaveEvent(QEvent* event){
+    is_pressed_ = false;
+    return QWidget::leaveEvent(event);
 }

@@ -55,7 +55,7 @@ void PlayScene::set_play_time(qint64 play_time,qint64 remaining_time){
 void PlayScene::SetSongInfo(DouBanSong* song){
     if(NULL == song)
         return;
-    ui->lbe_singer_name->setText(song->artist_.toStdString().c_str());
+    ui->lbe_singer_name->setText(song->artist_);
     ui->lbe_album_name->setText(("<" + song->albumtitle_ + "> " + song->public_time_));
     ui->lbe_song_name->setText(song->title_);
     ui->play_time->setRange(0,song->length_);

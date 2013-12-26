@@ -154,6 +154,7 @@ void ActionDispatch::ChangeChannel(quint32 /*from_channel_id*/,quint32 to_channe
                 "mainsite");
     g_douban_web->GetNewList(arg);
     is_next_ = true;
+
 }
 
 void ActionDispatch::ShowAlbumInfo(){
@@ -168,7 +169,6 @@ void ActionDispatch::OnReceivedAlbumPicture(QPixmap* picture){
         return;
     play_scene_->SetAlbumPicture(picture);
 }
-
 void ActionDispatch::OnReceivedNewList(SongList* song_list){
     ////获得播放列表完成，将其设置给播放器
     g_music->set_song_list(song_list);

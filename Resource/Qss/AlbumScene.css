@@ -4,11 +4,11 @@
 
 QWidget#album_shadow
 {
-        background:rgba(229,230,230,150);
+        background:rgba(80,80,80,80);
 }
 
 QLabel#lbe_tip
 {
         color:#FFFFFF;
-        background:rgba(50,50,50,150);
+        background:rgba(100,100,100,200);
 }

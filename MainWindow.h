@@ -7,6 +7,9 @@
 #include <QToolButton>
 #include <QPushButton>
 
+#include "./Tray/Tray.h"
+#include "./Tray/TrayIconMenu.h"
+
 namespace Ui {
 class MainWindow;
 }
@@ -29,8 +32,13 @@ protected:
 private slots:
     void OnPause();
     void OnPlay();
+    void OnStateChangePlaying();
+    void OnStateChangePaused();
+    void OnCloseButtonClicked();
+    void OnShow();
 private:
     void InitUi();
+    void InitTray();
 private:
     Ui::MainWindow *ui;
 
@@ -40,6 +48,9 @@ private:
     QToolButton* close_button_;     ////πÿ±’∞¥≈•
     QToolButton* pause_button_;     ////‘›Õ£∞¥≈•
     QPushButton* play_button_;      ////≤•∑≈∞¥≈•
+
+    Tray* tray_;                    ////Õ–≈Ã
+    TrayIconMenu* tray_menu_;       ////Õ–≈Ã≤Àµ•¿∏
 };
 
 #endif // MAINWINDOW_H

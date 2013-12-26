@@ -11,9 +11,6 @@ int main(int argc, char *argv[])
 {
     QApplication app(argc, argv);
 
-    //QTextCodec::setCodecForTr(QTextCodec::codecForName("GBK"));
-    QTextCodec::setCodecForLocale(QTextCodec::codecForName("utf-8"));
-    QTextCodec::setCodecForCStrings(QTextCodec::codecForName("utf-8"));
     QTextCodec::setCodecForTr(QTextCodec::codecForName("GBK"));
 
     ////客户端与web通信
@@ -33,6 +30,7 @@ int main(int argc, char *argv[])
 
     int re = app.exec();
 
+    SAFE_DELETE(main_window);
     SAFE_DELETE(g_action_dispatch);
     SAFE_DELETE(g_music);
     SAFE_DELETE(g_douban_web);

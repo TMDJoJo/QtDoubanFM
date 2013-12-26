@@ -68,7 +68,6 @@ bool DouBanWeb::GetChannelId(const QString& url){
     connect(reply,SIGNAL(finished()),this,SLOT(OnReceivedChannelId()));
     return true;
 }
-
 void DouBanWeb::OnReceivedNewList(){
     QNetworkReply* reply = dynamic_cast<QNetworkReply*>(sender());
     ////接收到新播放列表
@@ -100,23 +99,23 @@ void DouBanWeb::OnReceivedNewList(){
             for(int index = 0;index < song_size;++index){
                 DouBanSong* new_song = new DouBanSong;
                 Q_ASSERT(new_song);
-                new_song->aid_ = (*root)["song"][index]["aid"].asString().c_str();
-                new_song->albumtitle_ = (*root)["song"][index]["albumtitle"].asString().c_str();
-                new_song->album_ = (*root)["song"][index]["album"].asString().c_str();
-                new_song->artist_ = (*root)["song"][index]["artist"].asString().c_str();
-                new_song->company_ = (*root)["song"][index]["company"].asString().c_str();
-                new_song->kbps_ = (*root)["song"][index]["kbps"].asString().c_str();
+                new_song->aid_ = QString::fromUtf8( (*root)["song"][index]["aid"].asString().c_str() );
+                new_song->albumtitle_ = QString::fromUtf8( (*root)["song"][index]["albumtitle"].asString().c_str() );
+                new_song->album_ = QString::fromUtf8( (*root)["song"][index]["album"].asString().c_str() );
+                new_song->artist_ = QString::fromUtf8( (*root)["song"][index]["artist"].asString().c_str() );
+                new_song->company_ = QString::fromUtf8( (*root)["song"][index]["company"].asString().c_str() );
+                new_song->kbps_ = QString::fromUtf8( (*root)["song"][index]["kbps"].asString().c_str() );
                 new_song->length_ = (*root)["song"][index]["length"].asUInt();
                 new_song->like_ = (*root)["song"][index]["like"].asBool();
-                new_song->picture_ = (*root)["song"][index]["picture"].asString().c_str();
-                new_song->public_time_ = (*root)["song"][index]["public_time"].asString().c_str();
+                new_song->picture_ = QString::fromUtf8( (*root)["song"][index]["picture"].asString().c_str() );
+                new_song->public_time_ = QString::fromUtf8( (*root)["song"][index]["public_time"].asString().c_str() );
                 new_song->rating_avg_ = (*root)["song"][index]["rating_avg"].asDouble();
-                new_song->sha256_ = (*root)["song"][index]["sha256"].asString().c_str();
-                new_song->sid_ = (*root)["song"][index]["sid"].asString().c_str();
-                new_song->ssid_ = (*root)["song"][index]["ssid"].asString().c_str();
-                new_song->subtype_ = (*root)["song"][index]["subtype"].asString().c_str();
-                new_song->title_ = (*root)["song"][index]["title"].asString().c_str();
-                new_song->url_ = (*root)["song"][index]["url"].asString().c_str();
+                new_song->sha256_ = QString::fromUtf8( (*root)["song"][index]["sha256"].asString().c_str() );
+                new_song->sid_ = QString::fromUtf8( (*root)["song"][index]["sid"].asString().c_str() );
+                new_song->ssid_ = QString::fromUtf8( (*root)["song"][index]["ssid"].asString().c_str() );
+                new_song->subtype_ = QString::fromUtf8( (*root)["song"][index]["subtype"].asString().c_str() );
+                new_song->title_ = QString::fromUtf8( (*root)["song"][index]["title"].asString().c_str() );
+                new_song->url_ = QString::fromUtf8( (*root)["song"][index]["url"].asString().c_str() );
 
                 new_song_list->push_back(new_song);
             }
@@ -190,15 +189,17 @@ ChannelList* DouBanWeb::ParseChannelList(const QString& reply_string){
         for(int index = 0;index < channel_size;++index){
             DouBanChannel* new_channel = new DouBanChannel;
             Q_ASSERT(new_channel);
-            new_channel->intro_ = (*root)[index]["intro"].asString().c_str();
-            new_channel->name_ = (*root)[index]["name"].asString().c_str();
-            new_channel->banner_ = (*root)[index]["banner"].asString().c_str();
-            new_channel->cover_ = (*root)[index]["cover"].asString().c_str();
+            new_channel->intro_ = QString::fromUtf8( (*root)[index]["intro"].asString().c_str() );
+            new_channel->name_ = QString::fromUtf8( (*root)[index]["name"].asString().c_str() );
+            new_channel->banner_ = QString::fromUtf8( (*root)[index]["banner"].asString().c_str() );
+            new_channel->cover_ = QString::fromUtf8( (*root)[index]["cover"].asString().c_str() );
             new_channel->id_ = (*root)[index]["id"].asUInt();
             new_channel->song_num_ = (*root)[index]["song_num"].asUInt();
             int hot_song_count = (*root)[index]["hot_songs"].size();
             for(int index = 0;index < hot_song_count;++index){
-                new_channel->hot_songs_.push_back((*root)[index]["hot_songs"][index].asString().c_str());
+                new_channel->hot_songs_.push_back(
+                            QString::fromUtf8( (*root)[index]["hot_songs"][index].asString().c_str() )
+                            );
             }
             ////TODO: hot songs and creator
 //            qDebug()<<new_channel->intro_<<new_channel->name_<<new_channel->id_<<new_channel->song_num_;

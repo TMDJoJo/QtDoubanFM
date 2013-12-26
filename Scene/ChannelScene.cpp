@@ -13,7 +13,9 @@ ChannelScene::ChannelScene(QWidget *parent) :
     ui(new Ui::ChannelScene),
     siderbar_animation_(NULL),
     is_spread_(false),
-    current_channel_id_(0)
+    current_channel_id_(0),
+    hot_channel_list_(NULL),
+    fast_channel_list_(NULL)
 {
     ui->setupUi(this);
 
@@ -34,19 +36,23 @@ ChannelScene::ChannelScene(QWidget *parent) :
 
 ChannelScene::~ChannelScene()
 {
-    while(!hot_channel_list_->isEmpty()){
-        DouBanChannel* channel = hot_channel_list_->front();
-        hot_channel_list_->pop_front();
-        SAFE_DELETE(channel);
+    if(NULL != hot_channel_list_){
+        while(!hot_channel_list_->isEmpty()){
+            DouBanChannel* channel = hot_channel_list_->front();
+            hot_channel_list_->pop_front();
+            SAFE_DELETE(channel);
+        }
     }
-    while(!fast_channel_list_->isEmpty()){
-        DouBanChannel* channel = fast_channel_list_->front();
-        fast_channel_list_->pop_front();
-        SAFE_DELETE(channel);
+    if(NULL != fast_channel_list_){
+        while(!fast_channel_list_->isEmpty()){
+            DouBanChannel* channel = fast_channel_list_->front();
+            fast_channel_list_->pop_front();
+            SAFE_DELETE(channel);
+        }
     }
     SAFE_DELETE(hot_channel_list_);
     SAFE_DELETE(fast_channel_list_);
-    SAFE_DELETE(siderbar_animation_);
+    //SAFE_DELETE(siderbar_animation_);
     delete ui;
 }
 
@@ -105,9 +111,7 @@ void ChannelScene::AddHotChannel(DouBanChannel* channel){
         return;
     Channel* new_channel = new Channel(channel);
     Q_ASSERT(new_channel);
-//    new_channel->set_channel_name(channel->name_ + "MHz");
-//    new_channel->set_song_num(QString::number(channel->song_num_) + tr("Ê×¸èÇú"));
-//    new_channel->set_channel_id(channel->id_);
+
     connect(new_channel,SIGNAL(clicked(quint32)),
             this,SLOT(OnChannelClicked(quint32)));
 
