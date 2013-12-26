@@ -196,9 +196,9 @@ ChannelList* DouBanWeb::ParseChannelList(const QString& reply_string){
             new_channel->id_ = (*root)[index]["id"].asUInt();
             new_channel->song_num_ = (*root)[index]["song_num"].asUInt();
             int hot_song_count = (*root)[index]["hot_songs"].size();
-            for(int index = 0;index < hot_song_count;++index){
+            for(int hot_song_index = 0;hot_song_index < hot_song_count;++hot_song_index){
                 new_channel->hot_songs_.push_back(
-                            QString::fromUtf8( (*root)[index]["hot_songs"][index].asString().c_str() )
+                            QString::fromUtf8( (*root)[index]["hot_songs"][hot_song_index].asString().c_str() )
                             );
             }
             ////TODO: hot songs and creator

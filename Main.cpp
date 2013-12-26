@@ -7,6 +7,9 @@
 #include "./Fm/ActionDispatch.h"
 #include "./Fm/Music/Music.h"
 
+#include <QHostInfo>
+#include <QDebug>
+
 int main(int argc, char *argv[])
 {
     QApplication app(argc, argv);

@@ -12,10 +12,13 @@ void TrayIconMenu::Init(){
 
     QAction* open_action = new QAction(tr("¶¹°êµçÌ¨"),this);
     this->addAction(open_action);
+    open_action->setEnabled(false);
     QAction* login_action = new QAction(tr("µÇÂ¼"),this);
     this->addAction(login_action);
+    login_action->setEnabled(false);
     QAction* set_action = new QAction(tr("ÉèÖÃ"),this);
     this->addAction(set_action);
+    set_action->setEnabled(false);
 
     this->addSeparator();
 
