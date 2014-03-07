@@ -9,6 +9,8 @@
 
 #include "./Tray/Tray.h"
 #include "./Tray/TrayIconMenu.h"
+#include "./Fm/Music/Music.h"
+#include "./Fm/Web/DouBanWeb.h"
 
 namespace Ui {
 class MainWindow;
@@ -32,13 +34,18 @@ protected:
 private slots:
     void OnPause();
     void OnPlay();
-    void OnStateChangePlaying();
-    void OnStateChangePaused();
+
     void OnCloseButtonClicked();
     void OnShow();
+
+    void OnMusicStateChange(Music::Music_State,Music::Music_State);
+    void OnPlayTimeTick(qint64 play_time,qint64 remaining_time);
 private:
     void InitUi();
     void InitTray();
+    void InitWeb();
+    void InitMusic();
+
 private:
     Ui::MainWindow *ui;
 
@@ -51,6 +58,9 @@ private:
 
     Tray* tray_;                    ////托盘
     TrayIconMenu* tray_menu_;       ////托盘菜单栏
+
+    Music* music_;                  ////音乐播放单元
+    DouBanWeb* douban_web_;         ////web连接单元
 };
 
 #endif // MAINWINDOW_H

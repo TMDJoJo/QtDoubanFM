@@ -22,6 +22,8 @@ public:
     void set_play_time(qint64 play_time,qint64 remaining_time);
     void SetSongInfo(DouBanSong*);
     void SetAlbumPicture(QPixmap*);
+public slots:
+    void PlayTmeTick(qint64 play_time,qint64 remaining_time);
 
 protected:
     void paintEvent(QPaintEvent* event);

@@ -12,9 +12,6 @@ DouBanWeb::DouBanWeb(QObject *parent) :
     network_manage_(NULL)
 {
     network_manage_ = new QNetworkAccessManager(this);
-    if(NULL == network_manage_){
-        qDebug()<<"err";
-    }
     Q_ASSERT(network_manage_);
 }
 

@@ -13,7 +13,7 @@
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <widget class="PlayScene" name="work_scene" native="true">
+  <widget class="PlayScene" name="play_scene" native="true">
    <property name="geometry">
     <rect>
      <x>16</x>

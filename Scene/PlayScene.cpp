@@ -14,8 +14,6 @@ PlayScene::PlayScene(QWidget *parent) :
 {
     ui->setupUi(this);
     InitUi();
-
-    g_action_dispatch->set_play_scene(this);
 }
 
 PlayScene::~PlayScene()
@@ -90,6 +88,13 @@ void PlayScene::SetAlbumPicture(QPixmap* picture){
 
     ui->album_image->setPalette(palette);
     SAFE_DELETE(picture);
+}
+
+void PlayScene::PlayTmeTick(qint64 play_time,qint64 remaining_time){
+    ui->lbe_time_remaining->setText(QString("-%1:%2")
+                                    .arg(remaining_time/60000,2,10,QChar('0'))
+                                    .arg((remaining_time/1000)%60,2,10,QChar('0')));
+    ui->play_time->setSliderPosition(play_time/1000);
 }
 
 void PlayScene::paintEvent(QPaintEvent*){

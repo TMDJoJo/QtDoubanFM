@@ -16,14 +16,14 @@ MainWindow::MainWindow(QWidget *parent) :
     close_button_(NULL),
     play_button_(NULL),
     tray_(NULL),
-    tray_menu_(NULL)
+    tray_menu_(NULL),
+    music_(NULL),
+    douban_web_(NULL)
 {
     ui->setupUi(this);
     InitUi();
     InitTray();
-    connect(g_music,SIGNAL(StateChangePlaying()),this,SLOT(OnStateChangePlaying()));
-    connect(g_music,SIGNAL(StateChangePaused()),this,SLOT(OnStateChangePaused()));
-    connect(tray_,SIGNAL(Show()),this,SLOT(OnShow()));
+    InitMusic();
 
     this->activateWindow();
 }
@@ -45,11 +45,11 @@ void MainWindow::InitUi(){
     setWindowFlags(Qt::FramelessWindowHint);
 
     ////设置QSS样式表
-    QFile file(":/Qss/Resource/Qss/MainWindow.css");
-    if (file.open(QIODevice::ReadOnly)){
-        this->setStyleSheet(file.readAll());
+    QFile qss_file(":/Qss/Resource/Qss/MainWindow.css");
+    if (qss_file.open(QIODevice::ReadOnly)){
+        this->setStyleSheet(qss_file.readAll());
+        qss_file.close();
     }
-    file.close();
 
     this->setAutoFillBackground(true);
 
@@ -94,11 +94,30 @@ void MainWindow::InitTray(){
     tray_->setContextMenu(tray_menu_);
     tray_->setToolTip(tr("豆瓣电台"));
     tray_->show();
+
+    connect(tray_,SIGNAL(Show()),this,SLOT(OnShow()));
+}
+
+void MainWindow::InitWeb(){
+    ////客户端与web通信
+    douban_web_ = new DouBanWeb(this);
+    Q_ASSERT(douban_web_);
+}
+
+void MainWindow::InitMusic(){
+    music_ = new Music(this);
+    Q_ASSERT(music_);
+    connect(music_,SIGNAL(StateChanged(Music::Music_State,Music::Music_State)),
+            this,SLOT(OnStateChangePlaying()));
+
+    connect(music_,SIGNAL(PlayTimeTick(qint64,qint64)),
+            this,SLOT(OnPlayTimeTick(qint64,qint64)));
+
 }
 
 void MainWindow::mousePressEvent(QMouseEvent *event){
     moveing_ = true;
-    move_position_ = event->globalPos() - pos();
+    move_position_ = event->globalPos()-pos();
     return QWidget::mousePressEvent(event);
 }
 
@@ -129,19 +148,15 @@ void MainWindow::paintEvent(QPaintEvent*){
 }
 
 void MainWindow::OnPause(){
-    g_action_dispatch->Pause();
+    ////暂停
+    if(NULL != music_)
+        music_->Pause();
 }
 
 void MainWindow::OnPlay(){
-    g_action_dispatch->Play();
-}
-
-void MainWindow::OnStateChangePlaying(){
-    play_button_->hide();
-}
-
-void MainWindow::OnStateChangePaused(){
-    play_button_->show();
+    ////播放
+    if(NULL != music_)
+        music_->Play();
 }
 
 void MainWindow::OnCloseButtonClicked(){
@@ -156,4 +171,18 @@ void MainWindow::OnShow(){
     }
     else{}
     this->activateWindow();
+}
+
+void MainWindow::OnMusicStateChange(
+        Music::Music_State new_state,Music::Music_State /*old_state*/){
+    if(new_state == Music::PausedState){
+        play_button_->show();
+    }
+    else if(new_state == Music::PlayingState){
+        play_button_->hide();
+    }
+}
+
+void MainWindow::OnPlayTimeTick(qint64 play_time,qint64 remaining_time){
+    ui->play_scene->set_play_time(play_time,remaining_time);
 }

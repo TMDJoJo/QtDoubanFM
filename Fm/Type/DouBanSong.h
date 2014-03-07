@@ -23,7 +23,7 @@ title: "一生不变"
 url: "http://mr4.douban.com/201312181753/ea16659aa3b53a5da5d7b76487ee7afb/view/song/small/p40753.mp3"
 */
 
-struct DouBanSong_T{
+struct DouBanSong{
     QString album_;
     QString picture_;
     QString ssid_;
@@ -43,7 +43,7 @@ struct DouBanSong_T{
     bool like_;
 };
 
-typedef struct DouBanSong_T DouBanSong;
+//typedef struct DouBanSong_T DouBanSong;
 
 typedef QList<DouBanSong*> SongList;
 #endif // DOUBANSONG_H

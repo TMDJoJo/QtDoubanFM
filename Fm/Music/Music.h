@@ -9,6 +9,15 @@ class Music : public QObject
 {
     Q_OBJECT
 public:
+    enum Music_State{
+        AudioOutputDeviceType    = 0,
+        StoppedState                ,
+        PlayingState                ,
+        BufferingState              ,
+        PausedState                 ,
+        ErrorState
+    };
+public:
     explicit Music(QObject *parent = 0);
     ~Music();
 
@@ -29,8 +38,7 @@ signals:
     void PlaySong(DouBanSong* song);
     void SongAboutFinish();
 
-    void StateChangePlaying();
-    void StateChangePaused();
+    void StateChanged(Music_State new_state, Music_State old_state);
 private slots:
     void OnTick(qint64);
     void OnStateChanged(Phonon::State new_state, Phonon::State old_state);

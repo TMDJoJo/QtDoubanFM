@@ -25,9 +25,11 @@ Music::Music(QObject *parent) :
 
     Phonon::createPath(media_object_,audio_output_);
 
-    connect(media_object_, SIGNAL(tick(qint64)), this, SLOT(OnTick(qint64)));
+    connect(media_object_,SIGNAL(tick(qint64)),
+            this,SLOT(OnTick(qint64)));
     connect(media_object_, SIGNAL(stateChanged(Phonon::State, Phonon::State)),
             this, SLOT(OnStateChanged(Phonon::State, Phonon::State)));
+
     connect(media_object_, SIGNAL(aboutToFinish()), this, SLOT(OnAboutToFinish()));
     connect(media_object_, SIGNAL(currentSourceChanged(const Phonon::MediaSource&)),
             this,SLOT(OnCurrentSourceChanged(const Phonon::MediaSource&)));
@@ -63,20 +65,7 @@ void Music::OnStateChanged(Phonon::State new_state, Phonon::State old_state){
     //Phonon::PausedState           4
     //Phonon::ErrorState            5
 
-    if(new_state == Phonon::PlayingState){
-        emit StateChangePlaying();
-        return;
-    }
-    if(new_state == Phonon::PausedState){
-        emit StateChangePaused();
-        return;
-    }
-
-    if(new_state == Phonon::ErrorState){
-        Next();
-        return;
-    }
-
+    emit StateChanged((Music_State)new_state,(Music_State)old_state);
 }
 //http://zonyitoo.github.io/blog/2013/01/22/doubanfmbo-fang-qi-kai-fa-shou-ji/
 //https://github.com/ginuerzh/qDoubanFM
@@ -149,9 +138,11 @@ void Music::SetVolume(quint8 value){
 }
 
 void Music::Pause(){
-    media_object_->pause();
+    if(media_object_->state() == Phonon::PlayingState)
+        media_object_->pause();
 }
 
 void Music::Play(){
-    media_object_->play();
+    if(media_object_->state() == Phonon::PausedState)
+        media_object_->play();
 }
