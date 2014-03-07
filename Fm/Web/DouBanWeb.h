@@ -11,17 +11,19 @@
 
 class DouBanWeb : public QObject
 {
+public:
+    enum GetNewListType{
+        FINISH_SONG     = 0,
+        LIKE               ,
+        TRASH              ,
+        NEXT               ,
+        END_LIST
+    };
     Q_OBJECT
 public:
     explicit DouBanWeb(QObject *parent = 0);
 
-//    static DouBanWeb& Instance(){
-//        ////TODO: 在静态函数内实例化web_instance_出LNK2001错误
-//        return web_instance_;
-//    }
-    bool GetNewList(const QString& arg);
-    bool LikeSong(const QString& arg);
-    bool TrashSong(const QString& arg);
+    void GetNewList(const QString& arg,GetNewListType type);
     bool GetAlbumPicture(const QString& url);
 
     bool GetChannelId(const QString& arg);
@@ -32,7 +34,7 @@ signals:
     void ReceivedHotChannels(ChannelList*);
     void ReceivedFastChannels(ChannelList*);
 private slots:
-    void OnReceivedNewList();
+    void OnFinishReceivedNewList();
     void OnReceivedAlbumPicture();
     void OnReceivedChannelId();
 private:

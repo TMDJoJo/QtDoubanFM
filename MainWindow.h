@@ -18,6 +18,7 @@ class MainWindow;
 
 class MainWindow : public QWidget
 {
+
     Q_OBJECT
     
 public:
@@ -34,12 +35,14 @@ protected:
 private slots:
     void OnPause();
     void OnPlay();
-
     void OnCloseButtonClicked();
     void OnShow();
 
     void OnMusicStateChange(Music::Music_State,Music::Music_State);
     void OnPlayTimeTick(qint64 play_time,qint64 remaining_time);
+    void OnSongAboutFinish(const DouBanSong*);
+
+
 private:
     void InitUi();
     void InitTray();

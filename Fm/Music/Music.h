@@ -32,11 +32,14 @@ public:
 
     void Pause();
     void Play();
+
+public slots:
+    void OnReceivedNewList(SongList*);
 signals:
     void ListEmpty();
     void PlayTimeTick(qint64 play_time,qint64 remaining_time);
-    void PlaySong(DouBanSong* song);
-    void SongAboutFinish();
+    void NextSong(DouBanSong* song);
+    void SongAboutFinish(const DouBanSong*);
 
     void StateChanged(Music_State new_state, Music_State old_state);
 private slots:

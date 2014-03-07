@@ -71,7 +71,7 @@ void Music::OnStateChanged(Phonon::State new_state, Phonon::State old_state){
 //https://github.com/ginuerzh/qDoubanFM
 void Music::OnAboutToFinish(){
     if(NULL != current_song_)
-        emit SongAboutFinish();
+        emit SongAboutFinish(current_song_);
     if(song_list_->isEmpty()){
         //// end of a list
         emit ListEmpty();
@@ -87,7 +87,7 @@ void Music::OnCurrentSourceChanged(const Phonon::MediaSource&){
     SAFE_DELETE(current_song_);
     current_song_ = song_list_->front();
     song_list_->pop_front();
-    emit PlaySong(current_song_);
+    emit NextSong(current_song_);
 }
 
 bool Music::set_song_list(SongList* song_list){
@@ -145,4 +145,21 @@ void Music::Pause(){
 void Music::Play(){
     if(media_object_->state() == Phonon::PausedState)
         media_object_->play();
+}
+
+void Music::OnReceivedNewList(SongList* song_list){
+    ////获得播放列表完成，将其设置给播放器
+    if(NULL == song_list)
+        return false;
+    if(song_list_ != NULL){
+        while(!song_list_->isEmpty()){
+            SAFE_DELETE(song_list_->front());
+            song_list_->pop_front();
+        }
+        SAFE_DELETE(song_list_);
+    }
+    song_list_ = song_list;
+    if(media_object_->state() != Phonon::PlayingState)
+        Next();
+    return true;
 }

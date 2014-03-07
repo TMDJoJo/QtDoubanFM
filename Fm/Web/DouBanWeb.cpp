@@ -23,31 +23,18 @@ QNetworkReply* DouBanWeb::Get(const QString& url){
     return network_manage_->get( QNetworkRequest(QUrl(url)) );
 }
 
-bool DouBanWeb::GetNewList(const QString& arg){
+void DouBanWeb::GetNewList(const QString& arg,GetNewListType type){
     QNetworkReply* reply = Get(
                 "http://douban.fm/j/mine/playlist?" + arg
                 );
-    connect(reply, SIGNAL(finished()),
-            this, SLOT(OnReceivedNewList()));
-    return true;
-}
 
-bool DouBanWeb::LikeSong(const QString& arg){
-    QNetworkReply* reply = Get(
-                "http://douban.fm/j/mine/playlist?" + arg
-                );
-    connect(reply, SIGNAL(finished()),
-            this, SLOT(OnReceivedNewList()));
-    return true;
-}
-
-bool DouBanWeb::TrashSong(const QString& arg){
-    QNetworkReply* reply = Get(
-                "http://douban.fm/j/mine/playlist?" + arg
-                );
-    connect(reply, SIGNAL(finished()),
-            this, SLOT(OnReceivedNewList()));
-    return true;
+    if(type != FINISH_SONG){
+        connect(reply, SIGNAL(finished()),
+                this, SLOT(OnFinishReceivedNewList()));
+    }
+    else{
+        reply->deleteLater();
+    }
 }
 
 bool DouBanWeb::GetAlbumPicture(const QString& url){
@@ -65,7 +52,8 @@ bool DouBanWeb::GetChannelId(const QString& url){
     connect(reply,SIGNAL(finished()),this,SLOT(OnReceivedChannelId()));
     return true;
 }
-void DouBanWeb::OnReceivedNewList(){
+void DouBanWeb::OnFinishReceivedNewList(){
+
     QNetworkReply* reply = dynamic_cast<QNetworkReply*>(sender());
     ////接收到新播放列表
     Q_ASSERT(reply);

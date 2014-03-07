@@ -102,6 +102,8 @@ void MainWindow::InitWeb(){
     ////客户端与web通信
     douban_web_ = new DouBanWeb(this);
     Q_ASSERT(douban_web_);
+    connect(douban_web_,SIGNAL(ReceivedNewList(SongList*)),
+            music_,SLOT(OnReceivedNewList(SongList*)));
 }
 
 void MainWindow::InitMusic(){
@@ -112,7 +114,8 @@ void MainWindow::InitMusic(){
 
     connect(music_,SIGNAL(PlayTimeTick(qint64,qint64)),
             this,SLOT(OnPlayTimeTick(qint64,qint64)));
-
+    connect(music_,SIGNAL(SongAboutFinish(const DouBanSong*)),
+            this,SLOT(OnSongAboutFinish(const DouBanSong*)));
 }
 
 void MainWindow::mousePressEvent(QMouseEvent *event){
@@ -186,3 +189,28 @@ void MainWindow::OnMusicStateChange(
 void MainWindow::OnPlayTimeTick(qint64 play_time,qint64 remaining_time){
     ui->play_scene->set_play_time(play_time,remaining_time);
 }
+
+////end of a song
+////get  http://douban.fm/j/mine/playlist?type=e&sid=549095&channel=170&pt=107.7&pb=64&from=mainsite&r=778a1ca772
+////reponse  {"r":0}
+void MainWindow::OnSongAboutFinish(const DouBanSong* current_song){
+    if(NULL == current_song)
+            //||NULL == channel_scene_)
+        return;
+    QString song_id = current_song->sid_;
+    QString channel_id = QString::number(ui->channel_scene->current_channel_id());
+    QString play_time = QString("%1").arg(float(current_song->length_)/1);
+    QString type = "e";
+    QString arg = QString("type=%1"
+                          "&sid=%2"
+                          "&pt=%3"
+                          "&channel=%4"
+                          "&pb=%5"
+                          "&from=%6").arg(
+                type,
+                song_id,play_time,
+                channel_id,QString::number(64),
+                "mainsite");
+    douban_web_->GetNewList(arg,DouBanWeb::FINISH_SONG);
+}
+
